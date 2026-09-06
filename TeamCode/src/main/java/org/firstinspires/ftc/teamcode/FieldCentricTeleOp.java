@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@TeleOp(name = "Field Centric Swerve Test")
+@TeleOp(name = "Field Centric Swerve Test (Default SDK)", group = "Final")
 public class FieldCentricTeleOp extends OpMode {
 
     private Follower follower;
