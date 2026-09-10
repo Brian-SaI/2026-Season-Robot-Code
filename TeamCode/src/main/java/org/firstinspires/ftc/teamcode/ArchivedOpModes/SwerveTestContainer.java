@@ -1,27 +1,20 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.ArchivedOpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
-import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.Commands.CommandSwerveDrivetrain;
-import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
-import org.firstinspires.ftc.teamcode.Commands.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.SwerveDrivetrain;
 
-@TeleOp(name = "2026-Season-Robot-Code (SolversLib)", group = "Final")
-public class RobotContainer extends CommandOpMode {
+@TeleOp(name = "2026 Field Centric Swerve (SolversLib)", group = "Offseason")
+public class SwerveTestContainer extends CommandOpMode {
 
     // Subsystems
     private SwerveDrivetrain swerve;
-    private IntakeSubsystem intakeSubsystem;
 
     // Commands
     private CommandSwerveDrivetrain driveCommand;
-    private IntakeCommand intakeCommand;
-    private OuttakeCommand outtakeCommand;
 
     // Controllers
     private GamepadEx driverController;
@@ -36,7 +29,6 @@ public class RobotContainer extends CommandOpMode {
 
         // Subsystems
         swerve = new SwerveDrivetrain(hardwareMap, telemetry);
-        intakeSubsystem = new IntakeSubsystem(hardwareMap);
 
         // Commands
         driveCommand = new CommandSwerveDrivetrain(
@@ -46,16 +38,9 @@ public class RobotContainer extends CommandOpMode {
                 () -> -driverController.getRightX()
         );
 
-        intakeCommand = new IntakeCommand(intakeSubsystem);
-        outtakeCommand = new OuttakeCommand(intakeSubsystem);
-
         // Swerve Drive
         swerve.setDefaultCommand(driveCommand);
         swerve.startTeleopDrive(true);
-
-        // Intake Commands
-        manipulatorController.getGamepadButton(GamepadKeys.Button.Y).whileHeld(intakeCommand);
-        manipulatorController.getGamepadButton(GamepadKeys.Button.B).whileHeld(outtakeCommand);
     }
 
     @Override

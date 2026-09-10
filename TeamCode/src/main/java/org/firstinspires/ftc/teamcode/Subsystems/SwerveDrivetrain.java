@@ -20,7 +20,6 @@ public class SwerveDrivetrain extends SubsystemBase {
     private final Follower follower;
     private final Telemetry telemetry;
 
-    // Direct motor references for diagnostic telemetry, independent of Pedro's own debug string.
     private final DcMotor flDrive, frDrive, blDrive, brDrive;
 
     public SwerveDrivetrain(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -70,8 +69,6 @@ public class SwerveDrivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // SolversLib calls periodic() once per scheduler run -- this replaces the old
-        // manual follower.update() call in the OpMode's loop().
         follower.update();
 
         telemetry.addData("pose", follower.getPose());
