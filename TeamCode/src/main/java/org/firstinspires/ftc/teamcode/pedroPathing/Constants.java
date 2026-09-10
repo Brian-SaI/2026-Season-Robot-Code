@@ -59,18 +59,18 @@ public class Constants {
 
     // ===================== Swerve Constants =====================
     public static SwerveConstants swerveConstants = new SwerveConstants()
-            .maxPower(1); // determines the max power of the drivetrain
+            .maxPower(1)//; // determines the max power of the drivetrain
             //.xVelocity();
             // Disables x-locking, useful while tuning pod offsets. Re-enable (comment this out)
             // once Angle Offset / Motor Direction / Encoder Direction tuning is done.
-            //.zeroPowerBehavior(SwerveConstants.ZeroPowerBehavior.IGNORE_ANGLE_CHANGES);
+            .zeroPowerBehavior(SwerveConstants.ZeroPowerBehavior.IGNORE_ANGLE_CHANGES);
     // .useBrakeModeInTeleOp(true) // optional, add back once you decide you want it
 
     // ===================== Pod PIDF placeholders =====================
     // Docs: "put in the placeholder pod PIDF coefficients (kP = 0.3, kI = 0, kD = 0.005, kF = 0)"
     // before running Swerve Offsets Test. Tune these for real in the Pod PIDF Tuning step.
-    private static double kP = 0.315;
-    private static double kD = 0.001; //0.00000005;
+    private static double kP = 0.3;
+    private static double kD = 0.0005; //0.00000005;
     private static double kFFront = 0;
     private static double kFBack = 0;
 
