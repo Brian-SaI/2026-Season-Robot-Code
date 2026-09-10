@@ -3,18 +3,25 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
+import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.Commands.CommandSwerveDrivetrain;
+import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
+import org.firstinspires.ftc.teamcode.Commands.OuttakeCommand;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.SwerveDrivetrain;
 
-@TeleOp(name = "2026 Field Centric Swerve (SolversLib)", group = "Final")
+@TeleOp(name = "2026-Season-Robot-Code (SolversLib)", group = "Final")
 public class RobotContainer extends CommandOpMode {
 
     // Subsystems
     private SwerveDrivetrain swerve;
+    private IntakeSubsystem intakeSubsystem;
 
     // Commands
     private CommandSwerveDrivetrain driveCommand;
+    private IntakeCommand intakeCommand;
+    private OuttakeCommand outtakeCommand;
 
     // Controllers
     private GamepadEx driverController;
@@ -22,12 +29,14 @@ public class RobotContainer extends CommandOpMode {
 
     @Override
     public void initialize() {
-        // Initialize Gamepads
+        // Driver
         driverController = new GamepadEx(gamepad1);
-        driverController = new GamepadEx(gamepad2);
+        // Manipulator
+        manipulatorController = new GamepadEx(gamepad2);
 
         // Subsystems
         swerve = new SwerveDrivetrain(hardwareMap, telemetry);
+        intakeSubsystem = new IntakeSubsystem(hardwareMap);
 
         // Commands
         driveCommand = new CommandSwerveDrivetrain(
@@ -37,11 +46,16 @@ public class RobotContainer extends CommandOpMode {
                 () -> -driverController.getRightX()
         );
 
+        intakeCommand = new IntakeCommand(intakeSubsystem);
+        outtakeCommand = new OuttakeCommand(intakeSubsystem);
+
         // Swerve Drive
         swerve.setDefaultCommand(driveCommand);
         swerve.startTeleopDrive(true);
 
-        // Intake
+        // Intake Commands
+        manipulatorController.getGamepadButton(GamepadKeys.Button.Y).whileHeld(intakeCommand);
+        manipulatorController.getGamepadButton(GamepadKeys.Button.B).whileHeld(outtakeCommand);
     }
 
     @Override
