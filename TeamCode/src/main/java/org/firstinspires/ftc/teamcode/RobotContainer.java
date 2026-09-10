@@ -10,24 +10,26 @@ import org.firstinspires.ftc.teamcode.Subsystems.SwerveDrivetrain;
 @TeleOp(name = "2026 Field Centric Swerve (SolversLib)", group = "Final")
 public class RobotContainer extends CommandOpMode {
 
-    // 1. Declare Subsystems (do not instantiate yet)
+    // Subsystems
     private SwerveDrivetrain swerve;
 
-    // 2. Declare Commands
+    // Commands
     private CommandSwerveDrivetrain driveCommand;
 
-    // 3. Declare Controllers
+    // Controllers
     private GamepadEx driverController;
+    private GamepadEx manipulatorController;
 
     @Override
     public void initialize() {
         // Initialize Gamepads
         driverController = new GamepadEx(gamepad1);
+        driverController = new GamepadEx(gamepad2);
 
-        // 4. Initialize Subsystems (pass hardwareMap/telemetry here)
+        // Subsystems
         swerve = new SwerveDrivetrain(hardwareMap, telemetry);
 
-        // 5. Initialize Commands (safe now that subsystems are no longer null)
+        // Commands
         driveCommand = new CommandSwerveDrivetrain(
                 swerve,
                 () -> driverController.getLeftY(),
@@ -35,15 +37,16 @@ public class RobotContainer extends CommandOpMode {
                 () -> -driverController.getRightX()
         );
 
-        // 6. Assign default command / button bindings
+        // Swerve Drive
         swerve.setDefaultCommand(driveCommand);
-
         swerve.startTeleopDrive(true);
+
+        // Intake
     }
 
     @Override
     public void run() {
-        super.run(); // runs the CommandScheduler, which drives driveCommand's execute()
+        super.run(); // runs the CommandScheduler
         telemetry.update();
     }
 }
