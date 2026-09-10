@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -26,6 +27,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
  *     - Circle (B)   -> Spins BL_Drive motor
  */
 @TeleOp(name = "Motor Test Joystick TeleOp", group = "Test")
+@Disabled
 public class ahh extends LinearOpMode {
 
     // Hard cap on motor power
