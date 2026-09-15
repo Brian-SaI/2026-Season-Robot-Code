@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.Pose;
+//import com.pedropathing.
+import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 /**
  * Owns the Pedro Pathing Follower and exposes swerve drive as a subsystem.
@@ -25,9 +27,8 @@ public class SwerveDrivetrain extends SubsystemBase {
     public SwerveDrivetrain(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(0, 0, 0));
-        follower.useCentripetal = false; // disabled per teleop testing -- revisit once path-following is tuned
+        follower = Constants.create(hardwareMap);
+        follower.setPose(new Pose(0, 0, 0));
         follower.update();
 
         // Names must match exactly what's in Constants.java's hardware map calls.
@@ -42,7 +43,7 @@ public class SwerveDrivetrain extends SubsystemBase {
      * @param brakeMode true to hold position under zero power, false to float
      */
     public void startTeleopDrive(boolean brakeMode) {
-        follower.startTeleopDrive(brakeMode);
+        follower.manual();
     }
 
     /**
@@ -53,14 +54,11 @@ public class SwerveDrivetrain extends SubsystemBase {
      * @param turn    -1 to 1, CCW-positive
      */
     public void driveFieldCentric(double forward, double strafe, double turn) {
-        follower.setTeleOpDrive(forward, strafe, turn, false);
+        follower.drivetrain.drive(new DrivePowers(forward, strafe, turn), false);
     }
 
-    /**
-     * Drives the swerve base, robot-centric.
-     */
     public void driveRobotCentric(double forward, double strafe, double turn) {
-        follower.setTeleOpDrive(forward, strafe, turn, true);
+        follower.manual(forward, strafe, turn);
     }
 
     public Follower getFollower() {
@@ -71,11 +69,11 @@ public class SwerveDrivetrain extends SubsystemBase {
     public void periodic() {
         follower.update();
 
-        telemetry.addData("pose", follower.getPose());
-        telemetry.addData("heading (deg)", Math.toDegrees(follower.getPose().getHeading()));
+        telemetry.addData("pose", follower.pose());
+        telemetry.addData("heading (deg)", Math.toDegrees(follower.pose().heading()));
 
-        telemetry.addData("velocity X", follower.getVelocity().getXComponent());
-        telemetry.addData("velocity Y", follower.getVelocity().getYComponent());
+//        telemetry.addData("velocity X", follower.tangentialVelocity().getXComponent());
+//        telemetry.addData("velocity Y", follower.getVelocity().getYComponent());
 
         telemetry.addLine("--- Drive Motor Power ---");
         telemetry.addData("FL_Drive power", flDrive.getPower());

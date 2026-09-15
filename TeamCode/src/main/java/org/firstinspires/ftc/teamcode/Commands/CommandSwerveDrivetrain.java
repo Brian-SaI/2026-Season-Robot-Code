@@ -41,11 +41,7 @@ public class CommandSwerveDrivetrain extends CommandBase {
 
     @Override
     public void execute() {
-        smoothedForward = smooth(smoothedForward, forwardSupplier.getAsDouble());
-        smoothedStrafe = smooth(smoothedStrafe, strafeSupplier.getAsDouble());
-        smoothedTurn = smooth(smoothedTurn, turnSupplier.getAsDouble());
-
-        swerve.driveFieldCentric(smoothedForward, smoothedStrafe, smoothedTurn);
+        swerve.driveFieldCentric(forwardSupplier.getAsDouble(), strafeSupplier.getAsDouble(), turnSupplier.getAsDouble());
     }
 
     @Override

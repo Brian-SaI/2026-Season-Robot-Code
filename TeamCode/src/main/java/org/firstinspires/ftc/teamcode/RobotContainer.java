@@ -41,7 +41,7 @@ public class RobotContainer extends CommandOpMode {
         // Commands
         driveCommand = new CommandSwerveDrivetrain(
                 swerve,
-                () -> driverController.getLeftY(),
+                () -> -driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
                 () -> -driverController.getRightX()
         );

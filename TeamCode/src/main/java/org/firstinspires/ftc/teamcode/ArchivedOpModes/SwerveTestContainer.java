@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.ArchivedOpModes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Commands.CommandSwerveDrivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.SwerveDrivetrain;
 
 @TeleOp(name = "2026 Field Centric Swerve (SolversLib)", group = "Offseason")
+@Disabled
 public class SwerveTestContainer extends CommandOpMode {
 
     // Subsystems
