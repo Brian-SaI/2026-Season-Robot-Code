@@ -54,7 +54,12 @@ public class SwerveDrivetrain extends SubsystemBase {
      * @param turn    -1 to 1, CCW-positive
      */
     public void driveFieldCentric(double forward, double strafe, double turn) {
-        follower.drivetrain.drive(new DrivePowers(forward, strafe, turn), false);
+        double heading = follower.pose().heading();
+
+        double robotForward = forward * Math.cos(heading) + strafe * Math.sin(heading);
+        double robotStrafe  = -forward * Math.sin(heading) + strafe * Math.cos(heading);
+
+        follower.manual(robotForward, robotStrafe, turn*0.25);
     }
 
     public void driveRobotCentric(double forward, double strafe, double turn) {
