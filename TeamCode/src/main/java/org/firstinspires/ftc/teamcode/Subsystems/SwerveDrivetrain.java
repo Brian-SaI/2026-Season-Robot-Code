@@ -11,6 +11,9 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
+import com.pedropathing.drivetrain.DrivePowers;
+import com.pedropathing.follower.ManualDrive;
+
 /**
  * Owns the Pedro Pathing Follower and exposes swerve drive as a subsystem.
  * All Follower lifecycle calls (creation, starting teleop mode, update()) live here --
@@ -54,12 +57,19 @@ public class SwerveDrivetrain extends SubsystemBase {
      * @param turn    -1 to 1, CCW-positive
      */
     public void driveFieldCentric(double forward, double strafe, double turn) {
-        double heading = follower.pose().heading();
+//        double heading = Math.toRadians(follower.pose().heading());
+//
+//        double robotForward = forward * Math.cos(heading) - strafe * Math.sin(heading);
+//        double robotStrafe  = forward * Math.sin(heading) + strafe * Math.cos(heading);
 
-        double robotForward = forward * Math.cos(heading) + strafe * Math.sin(heading);
-        double robotStrafe  = -forward * Math.sin(heading) + strafe * Math.cos(heading);
-
-        follower.manual(robotForward, robotStrafe, turn*0.25);
+        DrivePowers powers = ManualDrive.fieldCentric(
+                forward,
+                strafe,
+                turn,
+                follower.pose().heading()
+        );
+        follower.manual(powers);
+        follower.update();
     }
 
     public void driveRobotCentric(double forward, double strafe, double turn) {

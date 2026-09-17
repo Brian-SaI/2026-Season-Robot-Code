@@ -138,7 +138,7 @@ public class Constants {
                 c.analogMaxVoltage.set(3.216);
             }
     );
-    
+
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.3);

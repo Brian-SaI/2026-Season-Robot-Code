@@ -14,9 +14,9 @@ import java.util.function.DoubleSupplier;
 public class CommandSwerveDrivetrain extends CommandBase {
 
     private final SwerveDrivetrain swerve;
-    private final DoubleSupplier forwardSupplier;
-    private final DoubleSupplier strafeSupplier;
-    private final DoubleSupplier turnSupplier;
+    private final DoubleSupplier forward;
+    private final DoubleSupplier strafe;
+    private final DoubleSupplier turn;
 
     // EMA (exponential moving average) smoothing for stick inputs.
     // alpha closer to 1.0 = less smoothing (more responsive, more jitter passes through)
@@ -26,12 +26,12 @@ public class CommandSwerveDrivetrain extends CommandBase {
     private double smoothedStrafe = 0;
     private double smoothedTurn = 0;
 
-    public CommandSwerveDrivetrain(SwerveDrivetrain swerve, DoubleSupplier forwardSupplier,
-                              DoubleSupplier strafeSupplier, DoubleSupplier turnSupplier) {
+    public CommandSwerveDrivetrain(SwerveDrivetrain swerve, DoubleSupplier forward,
+                              DoubleSupplier strafe, DoubleSupplier turn) {
         this.swerve = swerve;
-        this.forwardSupplier = forwardSupplier;
-        this.strafeSupplier = strafeSupplier;
-        this.turnSupplier = turnSupplier;
+        this.forward = forward;
+        this.strafe = strafe;
+        this.turn = turn;
         addRequirements(swerve);
     }
 
@@ -41,7 +41,7 @@ public class CommandSwerveDrivetrain extends CommandBase {
 
     @Override
     public void execute() {
-        swerve.driveFieldCentric(forwardSupplier.getAsDouble(), strafeSupplier.getAsDouble(), turnSupplier.getAsDouble());
+        swerve.driveFieldCentric(forward.getAsDouble(), strafe.getAsDouble(), turn.getAsDouble());
     }
 
     @Override
