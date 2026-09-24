@@ -31,7 +31,7 @@ public class SwerveDrivetrain extends SubsystemBase {
         this.telemetry = telemetry;
 
         follower = Constants.create(hardwareMap);
-        follower.setPose(new Pose(0, 0, 0));
+        follower.setPose(new Pose(75, 75, Math.toRadians(180)));
         follower.update();
 
         // Names must match exactly what's in Constants.java's hardware map calls.
@@ -66,10 +66,11 @@ public class SwerveDrivetrain extends SubsystemBase {
                 forward,
                 strafe,
                 turn,
-                follower.pose().heading()
+                -follower.pose().heading()
         );
+
         follower.manual(powers);
-        follower.update();
+        // follower.update();
     }
 
     public void driveRobotCentric(double forward, double strafe, double turn) {
