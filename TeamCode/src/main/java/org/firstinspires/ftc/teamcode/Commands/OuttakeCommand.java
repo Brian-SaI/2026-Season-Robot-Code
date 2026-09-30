@@ -8,7 +8,7 @@ public class OuttakeCommand extends CommandBase {
 
     IntakeSubsystem intakeSubsystem;
     public OuttakeCommand(IntakeSubsystem intakeSubsystem) {
-    this.intakeSubsystem = intakeSubsystem;
+        this.intakeSubsystem = intakeSubsystem;
 
         addRequirements(intakeSubsystem);
     }

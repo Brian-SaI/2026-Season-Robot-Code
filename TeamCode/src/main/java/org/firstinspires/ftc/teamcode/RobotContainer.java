@@ -64,7 +64,7 @@ public class RobotContainer extends CommandOpMode {
         // Intake Commands
         manipulatorController.getGamepadButton(GamepadKeys.Button.Y).whileHeld(intakeCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.B).whileHeld(outtakeCommand);
-        manipulatorController.getGamepadButton(GamepadKeys.Button.X) .whileHeld(shootCommand);
+        manipulatorController.getGamepadButton(GamepadKeys.Button.X).whileHeld(shootCommand);
     }
 
     @Override
