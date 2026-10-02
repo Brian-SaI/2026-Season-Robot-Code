@@ -5,11 +5,14 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Vector2D;
 import com.pedropathing.revhub.drivetrains.CoaxialPod;
 import com.pedropathing.revhub.drivetrains.CoaxialPodConfig;
+import com.pedropathing.revhub.drivetrains.Mecanum;
+import com.pedropathing.revhub.drivetrains.MecanumConfig;
 import com.pedropathing.revhub.drivetrains.Swerve;
 import com.pedropathing.revhub.drivetrains.SwerveConfig;
 import com.pedropathing.revhub.localizers.PinpointConfig;
 import com.pedropathing.revhub.localizers.PinpointLocalizer;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -31,14 +34,19 @@ public class Constants {
     // ------------------------------------------------------------------
     // Swerve drivetrain config
     // ------------------------------------------------------------------
-    public static SwerveConfig driveConfig = new SwerveConfig(
-            c -> {
-                // Disables x-locking, useful while tuning pod offsets. Switch to X_LOCK
-                // once swerve tuning is fully complete (recommended per the docs).
-                c.zeroPowerBehavior.set(SwerveConfig.ZeroPowerBehavior.IGNORE_ANGLE_CHANGES);
-                c.manualBrakeMode.set(true);
-                c.voltageCompensation.set(false);
-            }
+    public static MecanumConfig DriveConfig = new MecanumConfig(
+         config -> {
+             config.frontLeftName.set("front Left");
+             config.frontRightName.set("front right");
+             config.backLeftName.set("back left");
+             config.backRightName.set("back right");
+
+             config.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
+             config.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
+             config.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+             config.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+             config.manualBrakeMode.set(true);
+         }
     );
 
     // Measured robot dimensions -- not tuned, just measure your drivetrain.
@@ -52,92 +60,6 @@ public class Constants {
     private static double kFFront = 0;
     private static double kFBack = 0;
 
-    public static CoaxialPodConfig leftFront = new CoaxialPodConfig(
-            c -> {
-                c.name.set("leftFront");
-                c.motorName.set("FL_Drive");
-                c.servoName.set("FL_Steer");
-                c.servoEncoderName.set("FL_Position");
-                c.turnController.set(Controller.pid(kP, 0, kD)
-                        .plus(Controller.proportionalFeedforward(kFFront)));
-
-                c.driveDirection.set(DcMotorSimple.Direction.FORWARD);
-                c.servoDirection.set(DcMotorSimple.Direction.FORWARD);
-                // NOTE: unverified against current docs -- confirm this field still
-                // exists/compiles against your installed com.pedropathing:revhub version.
-                c.encoderReversed.set(true);
-
-                c.angleOffsetRad.set(0.24999888910144346);
-                c.podOffset.set(Vector2D.cartesian(dtLength, dtWidth));
-
-                c.analogMinVoltage.set(0.019);
-                c.analogMaxVoltage.set(3.211);
-            }
-    );
-
-    public static CoaxialPodConfig rightFront = new CoaxialPodConfig(
-            c -> {
-                c.name.set("rightFront");
-                c.motorName.set("FR_Drive");
-                c.servoName.set("FR_Steer");
-                c.servoEncoderName.set("FR_Position");
-                c.turnController.set(Controller.pid(kP, 0, kD)
-                        .plus(Controller.proportionalFeedforward(kFFront)));
-
-                c.driveDirection.set(DcMotorSimple.Direction.FORWARD);
-                c.servoDirection.set(DcMotorSimple.Direction.FORWARD);
-                c.encoderReversed.set(true);
-
-                c.angleOffsetRad.set(2.987794697052968);
-                c.podOffset.set(Vector2D.cartesian(dtLength, -dtWidth));
-
-                c.analogMinVoltage.set(0.006);
-                c.analogMaxVoltage.set(3.213);
-            }
-    );
-
-    public static CoaxialPodConfig leftBack = new CoaxialPodConfig(
-            c -> {
-                c.name.set("leftBack");
-                c.motorName.set("BL_Drive");
-                c.servoName.set("BL_Steer");
-                c.servoEncoderName.set("BL_Position");
-                c.turnController.set(Controller.pid(kP, 0, kD)
-                        .plus(Controller.proportionalFeedforward(kFBack)));
-
-                c.driveDirection.set(DcMotorSimple.Direction.FORWARD);
-                c.servoDirection.set(DcMotorSimple.Direction.FORWARD);
-                c.encoderReversed.set(true);
-
-                c.angleOffsetRad.set(2.8300865944130758);
-                c.podOffset.set(Vector2D.cartesian(-dtLength, dtWidth));
-
-                c.analogMinVoltage.set(0.004);
-                c.analogMaxVoltage.set(3.201);
-            }
-    );
-
-    public static CoaxialPodConfig rightBack = new CoaxialPodConfig(
-            c -> {
-                c.name.set("rightBack");
-                c.motorName.set("BR_Drive");
-                c.servoName.set("BR_Steer");
-                c.servoEncoderName.set("BR_Position");
-                c.turnController.set(Controller.pid(kP, 0, kD)
-                        .plus(Controller.proportionalFeedforward(kFBack)));
-
-                c.driveDirection.set(DcMotorSimple.Direction.FORWARD);
-                c.servoDirection.set(DcMotorSimple.Direction.FORWARD);
-                c.encoderReversed.set(true);
-
-                c.angleOffsetRad.set(4.359082143018361);
-                c.podOffset.set(Vector2D.cartesian(-dtLength, -dtWidth));
-
-                c.analogMinVoltage.set(0.006);
-                c.analogMaxVoltage.set(3.216);
-            }
-    );
-
     // ------------------------------------------------------------------
     // Follower factory
     // NOTE: algorithm is null for now (no Foresight config). This matches
@@ -147,14 +69,11 @@ public class Constants {
     // pass `new Foresight(foresightConfig)` as the third argument here.
     // ------------------------------------------------------------------
     public static Follower create(HardwareMap h) {
-        CoaxialPod leftFrontPod = new CoaxialPod(h, leftFront);
-        CoaxialPod rightFrontPod = new CoaxialPod(h, rightFront);
-        CoaxialPod leftBackPod = new CoaxialPod(h, leftBack);
-        CoaxialPod rightBackPod = new CoaxialPod(h, rightBack);
         return new Follower(
                 new PinpointLocalizer(h, localizerConfig),
-                new Swerve(h, driveConfig, leftBackPod, leftFrontPod, rightBackPod, rightFrontPod),
+                new Mecanum(h, DriveConfig),
                 null
         );
+
     }
 }
