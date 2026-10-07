@@ -51,9 +51,10 @@ public class RobotContainer extends CommandOpMode {
 
         // Commands
         driveCommand = new CommandDrivetrain(drivetrain,
-                () -> -driverController.getLeftY(),
-                () -> -driverController.getLeftX(),
-                () -> -driverController.getRightX());
+                () -> -driverController.getLeftY()*driveSpeed(),
+                () -> -driverController.getLeftX()*driveSpeed(),
+                () -> -driverController.getRightX()*driveSpeed());
+
 
         drivetrain.setDefaultCommand(driveCommand);
         intakeCommand = new IntakeCommand(intakeSubsystem);
@@ -64,6 +65,17 @@ public class RobotContainer extends CommandOpMode {
         manipulatorController.getGamepadButton(GamepadKeys.Button.Y).whileHeld(intakeCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.B).whileHeld(outtakeCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.X).whileHeld(shootCommand);
+    }
+    private double driveSpeed(){
+        if (manipulatorController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) >=0.5){
+            return 0.35;
+        }
+
+        if (manipulatorController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) >= 0.5){
+            return 0.75;
+
+        }
+        return 0.5;
     }
 
     @Override
