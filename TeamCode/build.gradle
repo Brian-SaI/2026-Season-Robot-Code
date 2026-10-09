@@ -39,6 +39,8 @@ dependencies {
     implementation "org.solverslib:pedroPathing:0.3.5"
 
     implementation "com.bylazar:fullpanels:1.0.5"
+
+    implementation "com.bylazar:camerastream:1.0.2"
 }
 
 repositories {
