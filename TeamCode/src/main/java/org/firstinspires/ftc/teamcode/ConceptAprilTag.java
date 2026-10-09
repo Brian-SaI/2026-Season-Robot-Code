@@ -32,8 +32,8 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Size;
 
 
-import com.bylazar.telemetry.JoinedTelemetry;
-import com.bylazar.telemetry.PanelsTelemetry;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -109,8 +109,7 @@ public class ConceptAprilTag extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
-        telemetry = new JoinedTelemetry(PanelsTelemetry.INSTANCE.getFtcTelemetry(), telemetry);
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Demonstrate how to add a camera compatibility quirk
         // these can sometimes be needed if a camera behaves poorly.
@@ -218,6 +217,8 @@ public class ConceptAprilTag extends LinearOpMode {
 
         // Disable or re-enable the aprilTag processor at any time.
         visionPortal.setProcessorEnabled(aprilTag, true);
+        visionPortal.resumeStreaming();
+        FtcDashboard.getInstance().startCameraStream(visionPortal, 0);
 
 
     }   // end method initAprilTag()
