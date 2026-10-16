@@ -61,7 +61,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (target != null) {
             telemetry.addLine(
                     String.format(
-                            "Name: %s, Roll: %s, Bearing: %s, Range: %s",
+                            "Name: %s, Roll: %.2f, Bearing: %.2f, Range: %.2f",
                             target.metadata.name + "/" + target.metadata.shortName,
                             target.ftcPose.bearing,
                             target.ftcPose.range
