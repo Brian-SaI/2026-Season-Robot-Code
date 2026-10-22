@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.pedro;
 
+import com.pedropathing.algorithm.Foresight;
+import com.pedropathing.algorithm.ForesightConfig;
 import com.pedropathing.controllers.Controller;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Vector2D;
@@ -48,6 +50,8 @@ public class Constants {
              config.manualBrakeMode.set(true);
          }
     );
+ public static ForesightConfig foresightConfig;
+
 
     // Measured robot dimensions -- not tuned, just measure your drivetrain.
     // Distance is measured from the CENTER of the robot to each pod.
@@ -72,7 +76,7 @@ public class Constants {
         return new Follower(
                 new PinpointLocalizer(h, localizerConfig),
                 new Mecanum(h, DriveConfig),
-                null
+                new Foresight(foresightConfig)
         );
 
     }
