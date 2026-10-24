@@ -2,13 +2,13 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.seattlesolvers.solverslib.command.CommandBase;
 
-import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
-public class ShootCommand extends CommandBase {
+public class StopFlyWheelCommand extends CommandBase {
 
     ShooterSubsystem shooterSubsystem;
-    public ShootCommand(ShooterSubsystem shooterSubsystem) {
+
+    public StopFlyWheelCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
 
         addRequirements(shooterSubsystem);
@@ -16,8 +16,9 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void initialize() { // runs the command
-        shooterSubsystem.runShooter(4500);
+        shooterSubsystem.runShooter(0);
     }
+
 
     @Override
     public void execute() {
@@ -27,11 +28,11 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.runShooter(0);
     }
+
 }

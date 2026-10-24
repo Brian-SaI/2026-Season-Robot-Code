@@ -31,6 +31,16 @@ public class VisionSubsystem extends SubsystemBase {
         initAprilTag(m);
 
     }
+
+    public Double getTargetBearing(){
+        if (target==null) {
+            return null;
+        }
+        return target.ftcPose.bearing;
+        //positive = left
+        // negative = right
+
+    }
     private AprilTagClusterDetection findTarget() {
 
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();

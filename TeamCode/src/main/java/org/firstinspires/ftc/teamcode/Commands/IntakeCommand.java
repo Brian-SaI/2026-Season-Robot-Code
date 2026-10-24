@@ -2,20 +2,24 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.seattlesolvers.solverslib.command.CommandBase;
 
+import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends CommandBase {
+    IndexerSubsystem indexerSubsystem;
 
     IntakeSubsystem intakeSubsystem;
-    public IntakeCommand(IntakeSubsystem intakeSubsystem) {
+    public IntakeCommand(IntakeSubsystem intakeSubsystem, IndexerSubsystem indexerSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
+        this.indexerSubsystem = indexerSubsystem;
 
-        addRequirements(intakeSubsystem);
+        addRequirements(intakeSubsystem, indexerSubsystem);
     }
 
     @Override
     public void initialize() { // runs the command
-        intakeSubsystem.runIntake(0.5);
+        intakeSubsystem.runIntake();
+        indexerSubsystem.runIndexer();
     }
 
     @Override
@@ -31,6 +35,7 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        intakeSubsystem.runIntake(0);
+        intakeSubsystem.stopIntake();
+        indexerSubsystem.stopIndexer();
     }
 }
