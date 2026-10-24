@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.autos;
 import com.pedropathing.paths.Path;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 
 import org.firstinspires.ftc.teamcode.Commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
@@ -27,4 +28,9 @@ public abstract class AutoBase extends CommandOpMode {
     protected Command follow(Path path) {
         return new FollowPathCommand(drivetrain, path);
     }
+
+    protected Command sequencial(Command ...commands) {
+        return new SequentialCommandGroup(commands);
+    }
+
 }
