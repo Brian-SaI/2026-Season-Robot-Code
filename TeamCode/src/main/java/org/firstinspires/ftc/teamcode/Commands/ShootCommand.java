@@ -4,11 +4,11 @@ import com.seattlesolvers.solverslib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
-public class KickerCommand extends CommandBase {
+public class ShootCommand extends CommandBase {
 
     ShooterSubsystem shooterSubsystem;
 
-    public KickerCommand(ShooterSubsystem shooterSubsystem) {
+    public ShootCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
 
         addRequirements(shooterSubsystem);

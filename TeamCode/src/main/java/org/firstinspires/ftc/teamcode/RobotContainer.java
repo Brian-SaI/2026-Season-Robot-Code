@@ -9,8 +9,9 @@ import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.Commands.CommandDrivetrain;
 import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
-import org.firstinspires.ftc.teamcode.Commands.KickerCommand;
+import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
 import org.firstinspires.ftc.teamcode.Commands.OuttakeCommand;
+import org.firstinspires.ftc.teamcode.Commands.PointToAprilTagCommand;
 import org.firstinspires.ftc.teamcode.Commands.StartFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.Commands.StopFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
@@ -34,11 +35,12 @@ public class RobotContainer extends CommandOpMode {
     private CommandDrivetrain driveCommand;
     private IntakeCommand intakeCommand;
 
-    private KickerCommand kickerCommand;
+    private ShootCommand shootCommand;
     private OuttakeCommand outtakeCommand;
 
     private StartFlyWheelCommand startFlyWheelCommand;
     private StopFlyWheelCommand stopFlyWheelCommand;
+    private PointToAprilTagCommand pointToAprilTagCommand;
 
     // Controllers
     private GamepadEx driverController;
@@ -63,6 +65,7 @@ public class RobotContainer extends CommandOpMode {
                 () -> -driverController.getLeftX()*driveSpeed(),
                 () -> -driverController.getRightX()*driveSpeed());
 
+        driverController.getGamepadButton(GamepadKeys.Button.A).whileHeld(pointToAprilTagCommand);
 
         drivetrain.setDefaultCommand(driveCommand);
         intakeCommand = new IntakeCommand(intakeSubsystem, indexerSubsystem);
@@ -72,8 +75,7 @@ public class RobotContainer extends CommandOpMode {
         // Intake Commands
         manipulatorController.getGamepadButton(GamepadKeys.Button.B).whileHeld(intakeCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.Y).whileHeld(outtakeCommand);
-
-        manipulatorController.getGamepadButton(GamepadKeys.Button.X).whileHeld(kickerCommand);
+        manipulatorController.getGamepadButton(GamepadKeys.Button.X).whileHeld(shootCommand);
 
         new Trigger(() -> manipulatorController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
                 .whenActive(startFlyWheelCommand)
