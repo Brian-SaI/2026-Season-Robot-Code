@@ -1,5 +1,7 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.teleop;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
@@ -48,6 +50,7 @@ public class RobotContainer extends CommandOpMode {
 
     @Override
     public void initialize() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         // Driver
         driverController = new GamepadEx(gamepad1);
         // Manipulator
@@ -56,7 +59,7 @@ public class RobotContainer extends CommandOpMode {
         // Subsystems
         follower = Constants.create(hardwareMap);
         intakeSubsystem = new IntakeSubsystem(hardwareMap);
-        shooterSubsystem = new ShooterSubsystem(hardwareMap);
+        shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry);
         drivetrain = new MecanumDrivetrain(follower);
 
         // Commands
@@ -68,6 +71,8 @@ public class RobotContainer extends CommandOpMode {
         driverController.getGamepadButton(GamepadKeys.Button.A).whileHeld(pointToAprilTagCommand);
 
         drivetrain.setDefaultCommand(driveCommand);
+        shooterSubsystem.setDefaultCommand(shooterSubsystem.defaultCommand());
+
         intakeCommand = new IntakeCommand(intakeSubsystem, indexerSubsystem);
         outtakeCommand = new OuttakeCommand(intakeSubsystem, indexerSubsystem);
         startFlyWheelCommand = new StartFlyWheelCommand(shooterSubsystem);

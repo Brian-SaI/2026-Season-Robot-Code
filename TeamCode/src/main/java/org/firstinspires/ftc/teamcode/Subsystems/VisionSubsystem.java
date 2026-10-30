@@ -4,6 +4,8 @@ import android.util.Size;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.command.Command;
+import com.seattlesolvers.solverslib.command.Subsystem;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -18,13 +20,17 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagSingleDetection;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class VisionSubsystem extends SubsystemBase {
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
     private Telemetry telemetry;
     private AprilTagClusterDetection target;
+
+    private int activeUsers = 0;
 
     public VisionSubsystem(HardwareMap m, Telemetry telemetry){
         this.telemetry=telemetry;
@@ -66,21 +72,46 @@ public class VisionSubsystem extends SubsystemBase {
     }   // end method telemetryAprilTag()
     @Override
     public void periodic() {
-        target=findTarget();
+        if (visionPortal.getProcessorEnabled(aprilTag)) {
+            target = findTarget();
 
-        if (target != null) {
-            telemetry.addLine(
-                    String.format(
-                            "Name: %s, Roll: %.2f, Bearing: %.2f, Range: %.2f",
-                            target.metadata.name + "/" + target.metadata.shortName,
-                            target.ftcPose.bearing,
-                            target.ftcPose.range
-                    )
-            );
+            if (target != null) {
+                telemetry.addLine(
+                        String.format(
+                                "Name: %s, Roll: %.2f, Bearing: %.2f, Range: %.2f",
+                                target.metadata.name + "/" + target.metadata.shortName,
+                                target.ftcPose.bearing,
+                                target.ftcPose.range
+                        )
+                );
+            } else {
+                telemetry.addLine("No target found");
+            }
         } else {
-            telemetry.addLine("No target found");
+            telemetry.addLine("Vision Disabled");
         }
     }
+
+    public void enableProcessing() {
+        visionPortal.setProcessorEnabled(aprilTag, true);
+        activeUsers++;
+    }
+
+    public void disableProcessing() {
+        if (activeUsers == 1) {
+            visionPortal.setProcessorEnabled(aprilTag, false);
+            activeUsers = 0;
+        } else {
+            activeUsers--;
+        }
+
+    }
+
+    // Do-nothing
+    public Command defaultCommand() {
+        return run(() -> {});
+    }
+
     private void initAprilTag(HardwareMap m) {
 
         // Create the AprilTag processor.
@@ -141,8 +172,7 @@ public class VisionSubsystem extends SubsystemBase {
         // Build the Vision Portal, using the above settings.
         visionPortal = builder.build();
 
-        // Disable or re-enable the aprilTag processor at any time.
-        visionPortal.setProcessorEnabled(aprilTag, true);
+
         visionPortal.resumeStreaming();
         FtcDashboard.getInstance().startCameraStream(visionPortal, 0);
 

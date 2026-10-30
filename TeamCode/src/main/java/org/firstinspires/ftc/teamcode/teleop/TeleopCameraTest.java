@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 
-@TeleOp(name = "Camera Test", group = "Prototype")
+@TeleOp(name = "Camera Test", group = "Tuning")
 public class TeleopCameraTest extends OpMode {
 
     VisionSubsystem subsystem;
