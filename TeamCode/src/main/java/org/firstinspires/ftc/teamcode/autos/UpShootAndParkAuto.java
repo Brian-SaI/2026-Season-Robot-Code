@@ -6,8 +6,12 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Shoot and Park", group="Comp")
-public class ShootAndParkAuto extends AutoBase{
+import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
+import org.firstinspires.ftc.teamcode.Commands.StartFlyWheelCommand;
+import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
+
+@Autonomous(name="Up Shoot and Park", group="Comp")
+public class UpShootAndParkAuto extends AutoBase{
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private final Pose start = poseFactory.of(56, 8, 90);
@@ -28,7 +32,9 @@ public class ShootAndParkAuto extends AutoBase{
     protected void scheduleAuto() {
         schedule(
                 sequencial(
+                        startFlywheel(),
                         follow(path1()),
+                       shoot(),
                         follow(path2())
                 )
         );
