@@ -41,8 +41,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem(final HardwareMap hMap, final Telemetry telemetry) {
         this.telemetry = telemetry;
-        pShooter = hMap.get(DcMotorEx.class, "PollenShooter");
-        nShooter = hMap.get(DcMotorEx.class,"NectarShooter");
+        pShooter = hMap.get(DcMotorEx.class, "PollenShoot");
+        nShooter = hMap.get(DcMotorEx.class,"NectarShoot");
 
         pShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         nShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

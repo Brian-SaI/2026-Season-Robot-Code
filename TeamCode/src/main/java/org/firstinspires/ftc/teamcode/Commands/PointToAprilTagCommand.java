@@ -29,7 +29,7 @@ public class PointToAprilTagCommand extends CommandBase {
     @Override
     public void initialize() {
         autoAimController.setPID(AIM_P, 0.0, AIM_D);
-        visionSubsystem.enableProcessing();
+        //visionSubsystem.enableProcessing();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PointToAprilTagCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        visionSubsystem.disableProcessing();
+        //visionSubsystem.disableProcessing();
     }
 
 }

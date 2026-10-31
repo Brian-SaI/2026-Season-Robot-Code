@@ -35,6 +35,7 @@ public class VisionSubsystem extends SubsystemBase {
     public VisionSubsystem(HardwareMap m, Telemetry telemetry){
         this.telemetry=telemetry;
         initAprilTag(m);
+        enableProcessing();
 
     }
 
@@ -96,16 +97,16 @@ public class VisionSubsystem extends SubsystemBase {
         visionPortal.setProcessorEnabled(aprilTag, true);
         activeUsers++;
     }
-
-    public void disableProcessing() {
-        if (activeUsers == 1) {
-            visionPortal.setProcessorEnabled(aprilTag, false);
-            activeUsers = 0;
-        } else {
-            activeUsers--;
-        }
-
-    }
+//
+//    public void disableProcessing() {
+//        if (activeUsers == 1) {
+//            visionPortal.setProcessorEnabled(aprilTag, false);
+//            activeUsers = 0;
+//        } else {
+//            activeUsers--;
+//        }
+//
+//    }
 
     // Do-nothing
     public Command defaultCommand() {
