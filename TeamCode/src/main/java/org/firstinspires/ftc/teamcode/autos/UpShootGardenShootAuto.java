@@ -7,7 +7,7 @@ import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous (name= "Up Shoot Garden Shoot", group= "Comp" )
-public class UpShootGardenShootAuto extends AutoBase{
+public class UpShootGardenShootAuto extends AutoBase {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private final Pose start = poseFactory.of(56, 8, 90);
@@ -16,6 +16,8 @@ public class UpShootGardenShootAuto extends AutoBase{
     private final Pose point3 = poseFactory.of(59.2711, 129.4002, 6.6248);
     private final Pose point3Control1 = poseFactory.of(24.7598, 125.975, 0);
     private final Pose point4 = poseFactory.of(58.9204, 103.4524, 89.2258);
+    private final Pose point5 = poseFactory.of(8.3978, 102.227, -81.1929);
+    private final Pose point5Control1 = poseFactory.of(16.1287, 52.3292, 0);
 
     public Path path1() {
         return Paths.line(start, path1).linear(start, path1);
@@ -32,15 +34,25 @@ public class UpShootGardenShootAuto extends AutoBase{
     public Path path4() {
         return Paths.line(point3, point4).reverseTangent();
     }
+    public Path path5() {
+        return Paths.curve(point4, point5Control1, point5).reverseTangent();
+    }
+
 
     @Override
     protected void scheduleAuto() {
         schedule(
                 sequencial(
+                        startFlywheel(),
                         follow(path1()),
-                        follow(path2()),
+                        shoot(),
+                        parallelRace(
+                            follow(path2()),
+                            intake()),
                         follow(path3()),
-                        follow(path4())
+                        follow(path4()),
+                        shoot(),
+                        follow(path5())
                 )
         );
     }

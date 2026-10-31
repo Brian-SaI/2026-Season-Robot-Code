@@ -39,7 +39,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double N_TICKS_PER_SECOND_TO_RPM = N_GEAR_RATIO * 60.0 / N_TICKS_PER_REVOLUTION;
 
     private final DcMotorEx pShooter;
-     private double calculatePollenRpm;
     private final DcMotorEx nShooter;
     //private final DcMotorEx kicker;
 
@@ -47,8 +46,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem(final HardwareMap hMap, final Telemetry telemetry, VisionSubsystem visionSubsystem) {
         this.telemetry = telemetry;
-        pShooter = hMap.get(DcMotorEx.class, "PollenShooter");
-        nShooter = hMap.get(DcMotorEx.class,"NectarShooter");
+        pShooter = hMap.get(DcMotorEx.class, "PollenShoot");
+        nShooter = hMap.get(DcMotorEx.class,"NectarShoot");
         this.visionSubsystem = visionSubsystem;
 
         pShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -109,10 +108,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double calculatePollenRpm(double distance) {
-
+        return 0.0;
     }
     public double calculateNectarRpm(double distance) {
-
+        return 0.0;
     }
     public double interpolate(double x, double x1, double y1, double x2, double y2) {
         double slope = (y2 - y1) / (x2 - x1);

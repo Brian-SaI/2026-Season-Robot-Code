@@ -14,18 +14,15 @@ public class Tuning {
     @Tuner
     public static Procedure mecanumTuner() {
         return new MecanumTuner();
-        // Tuners go here
     }
 
     @Tuner
     public static Procedure pinpointTuner() {
         return new PinpointTuner();
-        // Tuners go here
     }
 
     @Tuner
     public static Procedure forsightTuner() {
         return new ForesightTuner((hardwareMap) -> new PinpointLocalizer(hardwareMap, Constants.localizerConfig), (hardwareMap) -> new Mecanum(hardwareMap, Constants.DriveConfig));
-        // Tuners go here
     }
 }
