@@ -8,7 +8,7 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 public class IndexerSubsystem extends SubsystemBase {
     private final DcMotorEx indexer;
 
-    public static double SPEED=0.5;
+    public static double SPEED=0.75;
 
     public IndexerSubsystem(final HardwareMap hardwareMap) {
         indexer = hardwareMap.get(DcMotorEx.class,"Indexer");

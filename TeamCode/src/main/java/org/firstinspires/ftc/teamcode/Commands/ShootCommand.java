@@ -2,16 +2,20 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.seattlesolvers.solverslib.command.CommandBase;
 
+import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
 public class ShootCommand extends CommandBase {
 
     ShooterSubsystem shooterSubsystem;
+    IndexerSubsystem indexerSubsystem;
 
-    public ShootCommand(ShooterSubsystem shooterSubsystem) {
+    public ShootCommand(ShooterSubsystem shooterSubsystem, IndexerSubsystem indexerSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
+        this.indexerSubsystem = indexerSubsystem;
 
-        addRequirements(shooterSubsystem);
+        addRequirements(shooterSubsystem, indexerSubsystem);
+
     }
 
     @Override
@@ -24,6 +28,7 @@ public class ShootCommand extends CommandBase {
     public void execute() {
         if (shooterSubsystem.isTargetVelocity()) {
             shooterSubsystem.runKicker();
+            indexerSubsystem.runIndexer();
         }
     }
 
@@ -35,5 +40,6 @@ public class ShootCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         shooterSubsystem.stopKicker();
+        indexerSubsystem.stopIndexer();
     }
 }

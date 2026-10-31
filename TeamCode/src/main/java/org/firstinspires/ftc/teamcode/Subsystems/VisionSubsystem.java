@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 public class VisionSubsystem extends SubsystemBase {
+
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
     private Telemetry telemetry;
@@ -37,7 +38,12 @@ public class VisionSubsystem extends SubsystemBase {
         initAprilTag(m);
 
     }
-
+    public Double getDistanceToTarget(){
+        if (target==null) {
+            return null;
+        }
+        return target.ftcPose.z;
+    }
     public Double getTargetBearing(){
         if (target==null) {
             return null;

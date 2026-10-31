@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 @TeleOp(name = "2026-Season-Robot-Code (SolversLib)", group = "Final")
@@ -43,6 +44,7 @@ public class RobotContainer extends CommandOpMode {
     private StartFlyWheelCommand startFlyWheelCommand;
     private StopFlyWheelCommand stopFlyWheelCommand;
     private PointToAprilTagCommand pointToAprilTagCommand;
+    private VisionSubsystem visionSubsystem;
 
     // Controllers
     private GamepadEx driverController;
@@ -59,7 +61,7 @@ public class RobotContainer extends CommandOpMode {
         // Subsystems
         follower = Constants.create(hardwareMap);
         intakeSubsystem = new IntakeSubsystem(hardwareMap);
-        shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry);
+        shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, visionSubsystem);
         drivetrain = new MecanumDrivetrain(follower);
 
         // Commands
@@ -87,11 +89,11 @@ public class RobotContainer extends CommandOpMode {
                 .whenInactive(stopFlyWheelCommand);
     }
     private double driveSpeed(){
-        if (manipulatorController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) >=0.5){
+        if (driverController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) >=0.5){
             return 0.35;
         }
 
-        if (manipulatorController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) >= 0.5){
+        if (driverController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) >= 0.5){
             return 0.75;
 
         }

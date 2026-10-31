@@ -6,17 +6,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 
 @TeleOp( name = "Shooter Tuning", group = "Tuning")
 public class ShooterTuning extends CommandOpMode {
 
     ShooterSubsystem shooterSubsystem;
+    VisionSubsystem visionSubsystem;
 
     @Override
     public void initialize() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry);
+        shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, visionSubsystem);
         shooterSubsystem.setDefaultCommand(shooterSubsystem.getDefaultCommand());
     }
 

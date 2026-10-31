@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @Config
 public class IntakeSubsystem extends SubsystemBase {
 
-    public static double SPEED=0.5;
+    public static double SPEED=0.75;
 
 
     private final DcMotorEx intake;
