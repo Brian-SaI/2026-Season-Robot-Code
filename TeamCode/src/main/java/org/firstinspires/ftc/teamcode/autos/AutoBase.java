@@ -41,7 +41,7 @@ public abstract class AutoBase extends CommandOpMode {
 
     protected Command shoot(){
         return  parallelRace(
-                new ShootCommand(shooter),
+                new ShootCommand(shooter, indexer),
                 new TimerCommand(2000));
     }
 

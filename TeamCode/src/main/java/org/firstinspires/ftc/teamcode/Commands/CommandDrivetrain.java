@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
-import com.pedropathing.follower.Follower;
 import com.seattlesolvers.solverslib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrivetrain;
-import org.firstinspires.ftc.teamcode.Subsystems.SwerveDrivetrain;
 
 import java.util.function.DoubleSupplier;
 
