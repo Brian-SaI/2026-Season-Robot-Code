@@ -3,8 +3,11 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.seattlesolvers.solverslib.command.Command;
+import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -22,9 +25,9 @@ public class ShooterSubsystem extends SubsystemBase {
     public static double FAR_DISTANCE=0.0;
     //public static double
 
-    public static double SHOOTER_P=0.0;
-    public static double SHOOTER_D=0.0;
-    public static double SHOOTER_F=0.0;
+    public static double SHOOTER_P=120.0;
+    public static double SHOOTER_D=15.0;
+    public static double SHOOTER_F=12.6189;
     public static boolean RESET_PID = false;
 
     public static double pTargetRPM = 0.0;
@@ -53,8 +56,16 @@ public class ShooterSubsystem extends SubsystemBase {
         pShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         nShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        pShooter.setDirection(DcMotorSimple.Direction.REVERSE);
+        nShooter.setDirection(DcMotorSimple.Direction.FORWARD);
+
         pShooter.setVelocity(0);
         nShooter.setVelocity(0);
+
+        PIDFCoefficients pidf = pShooter.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+        SHOOTER_F = pidf.f;
+        SHOOTER_D = pidf.d;
+        SHOOTER_P = pidf.p;
 
        // kicker = hMap.get(DcMotorEx.class, "kicker");
     }
@@ -66,20 +77,23 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        Double distanceToTarget = visionSubsystem.getDistanceToTarget();
+        Double distanceToTarget = null;//visionSubsystem.getDistanceToTarget();
         telemetry.addData("Target Distance", distanceToTarget == null ? 0 : distanceToTarget);
 
         if (RESET_PID) {
             setPID();
+            RESET_PID = false;
         }
 
-        double pRPM = pShooter.getVelocity() * P_TICKS_PER_SECOND_TO_RPM;
-        double nRPM = nShooter.getVelocity() * N_TICKS_PER_SECOND_TO_RPM;
+        double pRPM = pShooter.getVelocity();// * P_TICKS_PER_SECOND_TO_RPM;
+        double nRPM = nShooter.getVelocity();// * N_TICKS_PER_SECOND_TO_RPM;
         telemetry.addData("Pollen RPM", pRPM);
         telemetry.addData("Pollen RPM Target", pTargetRPM);
 
         telemetry.addData("Nectar RPM", nRPM);
         telemetry.addData("Nectar RPM Target", nTargetRPM);
+
+        telemetry.addData("Foo", System.currentTimeMillis() / 1000);
 
         runShooter(); // Run this every loop for now so we can tune
     }
@@ -96,15 +110,21 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void runShooter() {
-        pShooter.setVelocity(pTargetRPM / P_TICKS_PER_SECOND_TO_RPM);
-        nShooter.setVelocity(nTargetRPM / N_TICKS_PER_SECOND_TO_RPM);
+//        pShooter.setVelocity(pTargetRPM / P_TICKS_PER_SECOND_TO_RPM);
+//        nShooter.setVelocity(nTargetRPM / N_TICKS_PER_SECOND_TO_RPM);
+        pShooter.setVelocity(pTargetRPM);
+        nShooter.setVelocity(nTargetRPM);
     }
 
     public boolean isTargetVelocity() {
-        double pRPM = pShooter.getVelocity() * P_TICKS_PER_SECOND_TO_RPM;
-        double nRPM = nShooter.getVelocity() * N_TICKS_PER_SECOND_TO_RPM;
-        return Math.abs(pTargetRPM - pRPM) < VELOCITY_THRESHOLD
-            && Math.abs(nTargetRPM - nRPM) < VELOCITY_THRESHOLD;
+        telemetry.addLine(String.format("At target? pTarget %.2f - pvel %.2f", pTargetRPM, pShooter.getVelocity()));
+        return Math.abs(pTargetRPM - pShooter.getVelocity()) <= 100
+                && Math.abs(nTargetRPM - nShooter.getVelocity()) <= 100;
+
+//        double pRPM = pShooter.getVelocity() * P_TICKS_PER_SECOND_TO_RPM;
+//        double nRPM = nShooter.getVelocity() * N_TICKS_PER_SECOND_TO_RPM;
+//        return Math.abs(pTargetRPM - pRPM) < VELOCITY_THRESHOLD
+//            && Math.abs(nTargetRPM - nRPM) < VELOCITY_THRESHOLD;
     }
 
     public double calculatePollenRpm(double distance) {
@@ -119,7 +139,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return slope * x + intercept;
     }
     public void runKicker() {
-        //kicker.setPower(SPEED);
+        telemetry.addLine("Shooting");
     }
 
     public void stopKicker() {

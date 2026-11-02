@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.autos;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.paths.Path;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.ParallelRaceGroup;
@@ -15,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 public abstract class AutoBase extends CommandOpMode {
@@ -25,10 +29,26 @@ public abstract class AutoBase extends CommandOpMode {
     protected IndexerSubsystem indexer;
     protected ShooterSubsystem shooter;
 
+    protected VisionSubsystem vision;
     @Override
     public void initialize() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         drivetrain = new MecanumDrivetrain(Constants.create(hardwareMap));
+        intake = new IntakeSubsystem(hardwareMap);
+        indexer = new IndexerSubsystem(hardwareMap);
+
+        shooter = new ShooterSubsystem(hardwareMap,telemetry, null);
+    }
+
+    @Override
+    public void preRun() {
         scheduleAuto();
+    }
+
+    @Override
+    public void run() {
+        super.run();
+        telemetry.update();
     }
 
     protected abstract void scheduleAuto();
