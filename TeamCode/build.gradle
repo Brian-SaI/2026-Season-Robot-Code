@@ -27,6 +27,13 @@ android {
     packagingOptions {
         jniLibs.useLegacyPackaging true
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+            systemProperty 'net.bytebuddy.experimental', 'true'
+        }
+    }
 }
 
 dependencies {
@@ -40,6 +47,14 @@ dependencies {
 
 //    implementation "com.bylazar:fullpanels:1.0.5"
 //    implementation "com.bylazar:camerastream:1.0.2"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'
+
+    testImplementation 'org.mockito:mockito-core:5.14.2'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
 }
 
 repositories {

@@ -7,12 +7,12 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-//import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-@Config
 public class IntakeSubsystem extends SubsystemBase {
 
-    public static double SPEED=0.75;
-
+    @Config
+    public static class Params {
+        public static double SPEED = 0.75;
+    }
 
     private final DcMotorEx intake;
 
@@ -26,14 +26,15 @@ public class IntakeSubsystem extends SubsystemBase {
     public void periodic() {
     }
 
-
     public void runIntake() {
-        intake.setPower(SPEED);
+        intake.setPower(Params.SPEED);
     }
+
     public void reverseIntake() {
-        intake.setPower(-SPEED);
+        intake.setPower(-Params.SPEED);
     }
-public void  stopIntake() {
+
+    public void stopIntake() {
         intake.setPower(0);
-}
+    }
 }

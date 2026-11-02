@@ -16,7 +16,7 @@ public class StartFlyWheelCommand extends CommandBase {
 
     @Override
     public void initialize() { // runs the command
-        shooterSubsystem.runShooter(1750, 1710);
+        shooterSubsystem.runShooter(3490, 3490);
     }
 
 
