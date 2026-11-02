@@ -29,6 +29,6 @@ public class DownSideWaitShootAndPark extends AutoBase{
                     follow(path1()),
                     shoot()
             );
-        
+
     }
 }
