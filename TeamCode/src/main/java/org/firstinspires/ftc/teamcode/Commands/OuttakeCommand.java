@@ -11,6 +11,7 @@ public class OuttakeCommand extends CommandBase {
     IndexerSubsystem indexerSubsystem;
     public OuttakeCommand(IntakeSubsystem intakeSubsystem, IndexerSubsystem indexerSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
+        this.indexerSubsystem =indexerSubsystem;
 
         addRequirements(intakeSubsystem, indexerSubsystem);
     }

@@ -16,7 +16,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Config
     public static class Params {
-        public static double VELOCITY_THRESHOLD = 25;
+        public static double VELOCITY_THRESHOLD = 100.0;
 
         public static double CLOSE_DISTANCE = 0.0;
         public static double FAR_DISTANCE = 0.0;
@@ -80,6 +80,8 @@ public class ShooterSubsystem extends SubsystemBase {
             Params.RESET_PID = false;
         }
 
+        telemetry.addData("Pollen tps", pShooter.getVelocity());
+        telemetry.addData("Pollen tps Target", pollenRPMToVelocity(Params.pTargetRPM));
         telemetry.addData("Pollen RPM", getPollenRPM());
         telemetry.addData("Pollen RPM Target", Params.pTargetRPM);
 

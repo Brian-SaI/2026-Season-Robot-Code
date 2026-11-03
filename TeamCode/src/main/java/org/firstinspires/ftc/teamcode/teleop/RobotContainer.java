@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.button.Trigger;
@@ -23,7 +24,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
-@TeleOp(name = "2026-Season-Robot-Code (SolversLib)", group = "Final")
+@TeleOp(name = "BioBuzz Teleop", group = "Comp")
 public class RobotContainer extends CommandOpMode {
 
     // Subsystems
@@ -61,16 +62,23 @@ public class RobotContainer extends CommandOpMode {
         // Subsystems
         follower = Constants.create(hardwareMap);
         intakeSubsystem = new IntakeSubsystem(hardwareMap);
+        indexerSubsystem = new IndexerSubsystem(hardwareMap);
+        visionSubsystem = new VisionSubsystem(hardwareMap, telemetry);
         shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, visionSubsystem);
         drivetrain = new MecanumDrivetrain(follower);
+        pointToAprilTagCommand= new PointToAprilTagCommand(visionSubsystem, drivetrain);
+
 
         // Commands
         driveCommand = new CommandDrivetrain(drivetrain,
-                () -> -driverController.getLeftY()*driveSpeed(),
+                () -> driverController.getLeftY()*driveSpeed(),
                 () -> -driverController.getLeftX()*driveSpeed(),
                 () -> -driverController.getRightX()*driveSpeed());
 
         driverController.getGamepadButton(GamepadKeys.Button.A).whileHeld(pointToAprilTagCommand);
+
+        driverController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
+                        .whenPressed(() -> drivetrain.setPose(new Pose(0, 0, 0)));
 
         drivetrain.setDefaultCommand(driveCommand);
         shooterSubsystem.setDefaultCommand(shooterSubsystem.defaultCommand());
@@ -78,6 +86,8 @@ public class RobotContainer extends CommandOpMode {
         intakeCommand = new IntakeCommand(intakeSubsystem, indexerSubsystem);
         outtakeCommand = new OuttakeCommand(intakeSubsystem, indexerSubsystem);
         startFlyWheelCommand = new StartFlyWheelCommand(shooterSubsystem);
+        stopFlyWheelCommand = new StopFlyWheelCommand(shooterSubsystem);
+        shootCommand = new ShootCommand(shooterSubsystem, indexerSubsystem);
 
         // Intake Commands
         manipulatorController.getGamepadButton(GamepadKeys.Button.B).whileHeld(intakeCommand);

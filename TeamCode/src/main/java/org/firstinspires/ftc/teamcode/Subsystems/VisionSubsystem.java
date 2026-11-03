@@ -87,6 +87,7 @@ public class VisionSubsystem extends SubsystemBase {
                         String.format(
                                 "Name: %s, Roll: %.2f, Bearing: %.2f, Range: %.2f",
                                 target.metadata.name + "/" + target.metadata.shortName,
+                                target.ftcPose.roll,
                                 target.ftcPose.bearing,
                                 target.ftcPose.range
                         )
