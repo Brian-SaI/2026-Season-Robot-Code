@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Alliance;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -31,12 +32,15 @@ public class VisionSubsystem extends SubsystemBase {
     private Telemetry telemetry;
     private AprilTagClusterDetection target;
 
+    private Alliance alliance;
+
     private int activeUsers = 0;
 
-    public VisionSubsystem(HardwareMap m, Telemetry telemetry){
+    public VisionSubsystem(HardwareMap m, Telemetry telemetry, Alliance alliance){
         this.telemetry=telemetry;
         initAprilTag(m);
         enableProcessing();
+        this.alliance = alliance;
 
     }
     public Double getDistanceToTarget(){
@@ -64,7 +68,9 @@ public class VisionSubsystem extends SubsystemBase {
             if (detection instanceof AprilTagClusterDetection) {
 
                 AprilTagClusterDetection clusterDet = (AprilTagClusterDetection) detection;
-                if (clusterDet.ftcPose.roll>-90 && clusterDet.ftcPose.roll <90){
+                if (alliance.isTarget(clusterDet.metadata.shortName)
+                        && clusterDet.ftcPose.roll>-90
+                        && clusterDet.ftcPose.roll <90){
                     return clusterDet;
                 }
 //                telemetry.addLine(String.format("\n==== Tag Cluster (%s)", clusterDet.metadata.name));

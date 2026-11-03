@@ -10,6 +10,7 @@ import com.seattlesolvers.solverslib.command.button.Trigger;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
+import org.firstinspires.ftc.teamcode.Alliance;
 import org.firstinspires.ftc.teamcode.Commands.CommandDrivetrain;
 import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
@@ -24,9 +25,25 @@ import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
-@TeleOp(name = "BioBuzz Teleop", group = "Comp")
+
 public class RobotContainer extends CommandOpMode {
 
+    @TeleOp(name = "[BLUE] BioBuzz Teleop", group = "Comp")
+    public static class BlueTeleop extends RobotContainer {
+        public BlueTeleop() {
+            super(Alliance.BLUE);
+        }
+    }
+
+    @TeleOp(name = "[RED] BioBuzz Teleop", group = "Comp")
+    public static class RedTeleop extends RobotContainer {
+        public RedTeleop() {
+            super(Alliance.RED);
+        }
+    }
+
+
+    private Alliance alliance;
     // Subsystems
     private Follower follower;
     private IndexerSubsystem indexerSubsystem;
@@ -51,6 +68,10 @@ public class RobotContainer extends CommandOpMode {
     private GamepadEx driverController;
     private GamepadEx manipulatorController;
 
+    protected RobotContainer(Alliance alliance) {
+        this.alliance = alliance;
+    }
+
     @Override
     public void initialize() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -63,7 +84,7 @@ public class RobotContainer extends CommandOpMode {
         follower = Constants.create(hardwareMap);
         intakeSubsystem = new IntakeSubsystem(hardwareMap);
         indexerSubsystem = new IndexerSubsystem(hardwareMap);
-        visionSubsystem = new VisionSubsystem(hardwareMap, telemetry);
+        visionSubsystem = new VisionSubsystem(hardwareMap, telemetry, alliance);
         shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, visionSubsystem);
         drivetrain = new MecanumDrivetrain(follower);
         pointToAprilTagCommand= new PointToAprilTagCommand(visionSubsystem, drivetrain);
@@ -97,6 +118,9 @@ public class RobotContainer extends CommandOpMode {
         new Trigger(() -> manipulatorController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
                 .whenActive(startFlyWheelCommand)
                 .whenInactive(stopFlyWheelCommand);
+
+        drivetrain.calibratePinpoint();
+        drivetrain.setPose(new Pose(0,0,0));
     }
     private double driveSpeed(){
         if (driverController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) >=0.5){
@@ -113,6 +137,7 @@ public class RobotContainer extends CommandOpMode {
     @Override
     public void run() {
         super.run(); // runs the CommandScheduler
+        telemetry.addData("Heading",drivetrain.getPose().heading());
         telemetry.update();
     }
 }
