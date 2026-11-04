@@ -41,14 +41,15 @@ public class UpShootGardenShootAuto extends AutoBase {
 
     @Override
     protected void scheduleAuto() {
+    drivetrain.setPose(start);
         schedule(
-                sequencial(
-                        startFlywheel(),
+                sequencial
+                        (startFlywheel(),
                         follow(path1()),
                         shoot(),
                         parallelRace(
                             follow(path2()),
-                            intake()),
+                                intake()),
                         follow(path3()),
                         follow(path4()),
                         shoot(),

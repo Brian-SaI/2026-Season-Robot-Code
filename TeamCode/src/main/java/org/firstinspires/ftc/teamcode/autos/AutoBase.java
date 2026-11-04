@@ -62,9 +62,12 @@ public abstract class AutoBase extends CommandOpMode {
     protected Command shoot(){
         return  parallelRace(
                 new ShootCommand(shooter, indexer),
-                new TimerCommand(2000));
+                new TimerCommand(3000));
     }
 
+    protected Command pause(long timeInMs){
+            return new TimerCommand(timeInMs);
+    }
     protected Command intake(){return  new IntakeCommand(intake, indexer);
     }
     protected Command sequencial(Command ...commands) {

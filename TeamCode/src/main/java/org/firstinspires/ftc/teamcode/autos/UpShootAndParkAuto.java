@@ -14,19 +14,13 @@ import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 public class UpShootAndParkAuto extends AutoBase{
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose start = poseFactory.of(56, 8, -90);
-    private final Pose path1 = poseFactory.of(56, 11, -90);
-    private final Pose point2 = poseFactory.of(5.5039, 102.3838, 90.7874);
-    private final Pose point2Control1 = poseFactory.of(4.4111, 41.7574, 0);
+    private final Pose start = poseFactory.of(56.203, 9.6241, 90);
+    private final Pose point1 = poseFactory.of(13.8203, 94.0602, -90);
+    private final Pose point1Control1 = poseFactory.of(4.4111, 41.7574, 0);
 
     public Path path1() {
-        return Paths.line(start, path1).linear(start, path1);
+        return Paths.curve(start, point1Control1, point1).constant(point1);
     }
-
-    public Path path2() {
-        return Paths.curve(path1, point2Control1, point2).reverseTangent();
-    }
-
 
     @Override
     protected void scheduleAuto() {
@@ -34,9 +28,8 @@ public class UpShootAndParkAuto extends AutoBase{
         schedule(
                 sequencial(
                         startFlywheel(),
-                        follow(path1()),
-                       shoot(),
-                        follow(path2())
+                        shoot(),
+                        follow(path1())
                 )
         );
     }

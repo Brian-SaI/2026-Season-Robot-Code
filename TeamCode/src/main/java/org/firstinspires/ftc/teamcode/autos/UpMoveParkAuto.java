@@ -19,7 +19,8 @@ public class UpMoveParkAuto extends AutoBase{
     }
 
     @Override
-    protected void scheduleAuto() {
+    protected void scheduleAuto(){
+    drivetrain.setPose(start);
         schedule(
                 follow(path1())
         );

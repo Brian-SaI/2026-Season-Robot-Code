@@ -4,30 +4,31 @@ import com.pedropathing.api.Paths;
 import com.pedropathing.api.PoseFactory;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+@Autonomous(name = "Down Side Wait Shoot And Park", group = "Comp")
 public class DownSideWaitShootAndPark extends AutoBase{
+
+
 
 
         private final PoseFactory poseFactory = PoseFactory.degrees();
 
-        private final Pose start = poseFactory.of(58.4282, 138.6833, 90);
-        private final Pose path1 = poseFactory.of(58.5692, 109.665, 90);
-        private final Pose point2 = poseFactory.of(8.6069, 105.3917, 4.8887);
+        private final Pose start = poseFactory.of(60.0382, 133.3167, 90);
+        private final Pose point1 = poseFactory.of(13.0791, 120.4182, 90);
+        private final Pose point1Control1 = poseFactory.of(62.879, 95.8837, 0);
 
         public Path path1() {
-            return Paths.line(start, path1).linear(start, path1);
+            return Paths.curve(start, point1Control1, point1).constant(point1);
         }
-
-        public Path path2() {
-        return Paths.line(path1, point2).reverseTangent();
-        }
-
     @Override
     protected void scheduleAuto() {
+        drivetrain.setPose(start);
             schedule(
                     startFlywheel(),
-                    follow(path1()),
-                    shoot()
+                    pause(20000),
+                    shoot(),
+                    follow(path1())
             );
         
     }
