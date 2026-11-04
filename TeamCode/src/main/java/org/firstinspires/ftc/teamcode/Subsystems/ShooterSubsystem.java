@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
@@ -15,7 +16,7 @@ public class ShooterSubsystem extends SubsystemBase {
     VisionSubsystem visionSubsystem;
 
     @Config
-    public static class Params {
+    public static class ShooterParams {
         public static double VELOCITY_THRESHOLD = 100.0;
 
         public static double CLOSE_DISTANCE = 0.0;
@@ -28,6 +29,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
         public static double pTargetRPM = 0.0;
         public static double nTargetRPM = 0.0;
+
+        public static double GATE_OPEN_1 = 0.0;
+        public static double GATE_OPEN_2 = 0.0;
+        public static double GATE_CLOSED_1 = 0.0;
+        public static double GATE_CLOSED_2 = 0.0;
     }
 
     static final double P_GEAR_RATIO = 20.0 / 21.0;
@@ -38,7 +44,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final DcMotorEx pShooter;
     private final DcMotorEx nShooter;
-    //private final DcMotorEx kicker;
+
+    private final Servo gate1;
+    private final Servo gate2;
 
     private final Telemetry telemetry;
 
@@ -46,6 +54,12 @@ public class ShooterSubsystem extends SubsystemBase {
         this.telemetry = telemetry;
         pShooter = hMap.get(DcMotorEx.class, "PollenShoot");
         nShooter = hMap.get(DcMotorEx.class,"NectarShoot");
+        gate1 = hMap.get(Servo.class, "gate1");
+        gate2 = hMap.get(Servo.class, "gate2");
+
+        gate1.setPosition(ShooterParams.GATE_OPEN_1);
+        gate2.setPosition(ShooterParams.GATE_OPEN_2);
+
         this.visionSubsystem = visionSubsystem;
 
         pShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -58,16 +72,16 @@ public class ShooterSubsystem extends SubsystemBase {
         nShooter.setVelocity(0);
 
         PIDFCoefficients pidf = pShooter.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
-        Params.SHOOTER_F = pidf.f;
-        Params.SHOOTER_D = pidf.d;
-        Params.SHOOTER_P = pidf.p;
+        ShooterParams.SHOOTER_F = pidf.f;
+        ShooterParams.SHOOTER_D = pidf.d;
+        ShooterParams.SHOOTER_P = pidf.p;
 
        // kicker = hMap.get(DcMotorEx.class, "kicker");
     }
 
     public void setPID() {
-        pShooter.setVelocityPIDFCoefficients(Params.SHOOTER_P, 0, Params.SHOOTER_D, Params.SHOOTER_F);
-        nShooter.setVelocityPIDFCoefficients(Params.SHOOTER_P, 0, Params.SHOOTER_D, Params.SHOOTER_F);
+        pShooter.setVelocityPIDFCoefficients(ShooterParams.SHOOTER_P, 0, ShooterParams.SHOOTER_D, ShooterParams.SHOOTER_F);
+        nShooter.setVelocityPIDFCoefficients(ShooterParams.SHOOTER_P, 0, ShooterParams.SHOOTER_D, ShooterParams.SHOOTER_F);
     }
 
     @Override
@@ -75,18 +89,18 @@ public class ShooterSubsystem extends SubsystemBase {
         Double distanceToTarget = null;//visionSubsystem.getDistanceToTarget();
         telemetry.addData("Target Distance", distanceToTarget == null ? 0 : distanceToTarget);
 
-        if (Params.RESET_PID) {
+        if (ShooterParams.RESET_PID) {
             setPID();
-            Params.RESET_PID = false;
+            ShooterParams.RESET_PID = false;
         }
 
         telemetry.addData("Pollen tps", pShooter.getVelocity());
-        telemetry.addData("Pollen tps Target", pollenRPMToVelocity(Params.pTargetRPM));
+        telemetry.addData("Pollen tps Target", pollenRPMToVelocity(ShooterParams.pTargetRPM));
         telemetry.addData("Pollen RPM", getPollenRPM());
-        telemetry.addData("Pollen RPM Target", Params.pTargetRPM);
+        telemetry.addData("Pollen RPM Target", ShooterParams.pTargetRPM);
 
         telemetry.addData("Nectar RPM", getNectarRPM());
-        telemetry.addData("Nectar RPM Target", Params.nTargetRPM);
+        telemetry.addData("Nectar RPM Target", ShooterParams.nTargetRPM);
 
         telemetry.addData("Foo", System.currentTimeMillis() / 1000);
 
@@ -99,19 +113,19 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void runShooter(double nRPM, double pRPM ) {
-        Params.pTargetRPM = pRPM;
-        Params.nTargetRPM = nRPM;
+        ShooterParams.pTargetRPM = pRPM;
+        ShooterParams.nTargetRPM = nRPM;
         runShooter();
     }
 
     public void runShooter() {
-        setPollenRPM(Params.pTargetRPM);
-        setNectarRPM(Params.nTargetRPM);
+        setPollenRPM(ShooterParams.pTargetRPM);
+        setNectarRPM(ShooterParams.nTargetRPM);
     }
 
     public boolean isTargetVelocity() {
-        return Math.abs(Params.pTargetRPM - getPollenRPM()) < Params.VELOCITY_THRESHOLD
-            && Math.abs(Params.nTargetRPM - getNectarRPM()) < Params.VELOCITY_THRESHOLD;
+        return Math.abs(ShooterParams.pTargetRPM - getPollenRPM()) < ShooterParams.VELOCITY_THRESHOLD
+            && Math.abs(ShooterParams.nTargetRPM - getNectarRPM()) < ShooterParams.VELOCITY_THRESHOLD;
     }
 
     public double calculatePollenRpm(double distance) {
@@ -127,12 +141,16 @@ public class ShooterSubsystem extends SubsystemBase {
         double intercept = y1 - slope * x1;
         return slope * x + intercept;
     }
-    public void runKicker() {
+    public void openGate() {
         telemetry.addLine("Shooting");
+        gate1.setPosition(ShooterParams.GATE_OPEN_1);
+        gate2.setPosition(ShooterParams.GATE_OPEN_2);
     }
 
-    public void stopKicker() {
+    public void closeGate() {
         //kicker.setPower(0);
+        gate1.setPosition(ShooterParams.GATE_CLOSED_1);
+        gate2.setPosition(ShooterParams.GATE_CLOSED_2);
     }
 
     void setPollenRPM(double rpm) {

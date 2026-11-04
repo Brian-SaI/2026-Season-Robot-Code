@@ -12,7 +12,8 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 public class IndexerSubsystem extends SubsystemBase {
     private final DcMotorEx indexer;
 
-    public static double SPEED=0.75;
+    public static double SLOW_SPEED=0.45;
+    public static double FAST_SPEED= 0.75;
 
     public IndexerSubsystem(final HardwareMap hardwareMap) {
         indexer = hardwareMap.get(DcMotorEx.class,"Indexer");
@@ -21,10 +22,10 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public void runIndexer() {
-        indexer.setPower(SPEED);
+        indexer.setPower(SLOW_SPEED);
     }
     public void reverseIndexer() {
-        indexer.setPower(-SPEED);
+        indexer.setPower(-SLOW_SPEED);
     }
 
     public void stopIndexer() {
