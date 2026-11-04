@@ -10,9 +10,11 @@ import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 public class PointToAprilTagCommand extends CommandBase {
 
     @Config
-    public static class Params {
-        public static double AIM_P = 0.0;
-        public static double AIM_D = 0.0;
+    public static class AimParams {
+        public static double AIM_P = 0.025;
+        public static double AIM_D = 0.002;
+
+        public static boolean RESET_AIM_PID = false;
     }
 
     private final MecanumDrivetrain mecanumDrivetrain;
@@ -23,13 +25,13 @@ public class PointToAprilTagCommand extends CommandBase {
     public PointToAprilTagCommand(VisionSubsystem visionSubsystem, MecanumDrivetrain mecanumDrivetrain) {
         this.mecanumDrivetrain = mecanumDrivetrain;
         this.visionSubsystem = visionSubsystem;
-        autoAimController = new PIDController(Params.AIM_P, 0.0, Params.AIM_D);
+        autoAimController = new PIDController(AimParams.AIM_P, 0.0, AimParams.AIM_D);
         addRequirements(mecanumDrivetrain);
     }
 
     @Override
     public void initialize() {
-        autoAimController.setPID(Params.AIM_P, 0.0, Params.AIM_D);
+        autoAimController.setPID(AimParams.AIM_P, 0.0, AimParams.AIM_D);
         //visionSubsystem.enableProcessing();
     }
 
@@ -38,7 +40,13 @@ public class PointToAprilTagCommand extends CommandBase {
         Double targetBearing = visionSubsystem.getTargetBearing();
         if (targetBearing != null) {
             double turnSpeed = autoAimController.calculate(targetBearing, 0);
-            mecanumDrivetrain.driveFieldCentric(0, 0, turnSpeed);
+            mecanumDrivetrain.driveFieldCentric(0, 0, -turnSpeed);
+        } else {
+            mecanumDrivetrain.driveFieldCentric(0, 0, 0.0);
+        }
+        if (AimParams.RESET_AIM_PID) {
+            AimParams.RESET_AIM_PID = false;
+            autoAimController.setPID(AimParams.AIM_P, 0.0, AimParams.AIM_D);
         }
     }
 

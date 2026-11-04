@@ -30,6 +30,6 @@ public class DownSideWaitShootAndPark extends AutoBase{
                     shoot(),
                     follow(path1())
             );
-        
+
     }
 }

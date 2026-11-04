@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Alliance;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 
 @TeleOp(name = "Camera Test", group = "Tuning")
@@ -15,7 +16,7 @@ public class TeleopCameraTest extends OpMode {
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry(), telemetry);
-        subsystem = new VisionSubsystem(hardwareMap, telemetry);
+        subsystem = new VisionSubsystem(hardwareMap, telemetry, Alliance.BLUE);
     }
 
     @Override

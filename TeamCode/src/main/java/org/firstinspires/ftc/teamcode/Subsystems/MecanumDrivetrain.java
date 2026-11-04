@@ -19,13 +19,18 @@ public class MecanumDrivetrain extends SubsystemBase {
     public void setPose(Pose pose) {
         follower.setPose(pose);
     }
-
+    public Pose getPose(){
+        return follower.pose();
+    }
+    public void calibratePinpoint(){
+            follower.localizer.reset();
+    }
     public void driveFieldCentric(double forward, double strafe, double turn) {
         DrivePowers powers = ManualDrive.fieldCentric(
                 forward,
                 strafe,
                 turn,
-                -follower.pose().heading()
+                follower.pose().heading()
         );
         follower.manual(powers);
         follower.update();

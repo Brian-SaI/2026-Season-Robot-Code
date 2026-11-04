@@ -27,7 +27,7 @@ public class ShootCommand extends CommandBase {
     @Override
     public void execute() {
         if (shooterSubsystem.isTargetVelocity()) {
-            shooterSubsystem.runKicker();
+            shooterSubsystem.openGate();
             indexerSubsystem.runIndexer();
         }
     }
@@ -39,7 +39,7 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.stopKicker();
+        shooterSubsystem.closeGate();
         indexerSubsystem.stopIndexer();
     }
 }
