@@ -50,4 +50,8 @@ public class MecanumDrivetrain extends SubsystemBase {
         return follower.isBusy();
     }
 
+    public Command stopCommand() {
+        return runOnce(() -> follower.stop());
+    }
+
 }

@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.autos;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
@@ -33,6 +36,7 @@ public abstract class AutoBase extends CommandOpMode {
     public void initialize() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         drivetrain = new MecanumDrivetrain(Constants.create(hardwareMap));
+        drivetrain.calibratePinpoint();
         intake = new IntakeSubsystem(hardwareMap);
         indexer = new IndexerSubsystem(hardwareMap);
 
@@ -47,13 +51,39 @@ public abstract class AutoBase extends CommandOpMode {
     @Override
     public void run() {
         super.run();
+        drawRobot(drivetrain.getPose());
+        telemetry.addData("Pose", drivetrain.getPose());
         telemetry.update();
+    }
+
+    public void drawRobot(Pose pose) {
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        TelemetryPacket packet = new TelemetryPacket();
+        Canvas canvas = packet.fieldOverlay();
+
+        // 1. Set the color and draw the robot's main chassis (circle)
+        canvas.setStroke("blue");
+        canvas.strokeCircle(pose.x(), pose.y(), 9.0);
+
+        // 2. Draw a line pointing in the direction the robot is facing (Heading)
+        double headX = pose.x() + 9.0 * Math.cos(pose.heading());
+        double headY = pose.y() + 9.0 * Math.sin(pose.heading());
+
+        canvas.setStroke("red");
+        canvas.strokeLine(pose.x(), pose.y(), headX, headY);
+
+        // 3. Send the packet to the dashboard
+        dashboard.sendTelemetryPacket(packet);
     }
 
     protected abstract void scheduleAuto();
 
     protected Command follow(Path path) {
         return new FollowPathCommand(drivetrain, path);
+    }
+
+    protected Command stopCommand() {
+        return drivetrain.stopCommand();
     }
 
     protected Command startFlywheel(){return new StartFlyWheelCommand(shooter);}
@@ -69,7 +99,7 @@ public abstract class AutoBase extends CommandOpMode {
     }
     protected Command intake(){return  new IntakeCommand(intake, indexer);
     }
-    protected Command sequencial(Command ...commands) {
+    protected Command sequential(Command ...commands) {
         return new SequentialCommandGroup(commands);
     }
 

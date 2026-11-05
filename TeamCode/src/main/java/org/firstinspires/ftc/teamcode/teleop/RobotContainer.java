@@ -151,6 +151,7 @@ public class RobotContainer extends CommandOpMode {
 
          }
         telemetry.addData("Heading",drivetrain.getPose().heading());
+         telemetry.addData("Pose", drivetrain.getPose());
         telemetry.update();
     }
 }

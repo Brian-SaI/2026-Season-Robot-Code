@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class UpShootGardenDownShoot extends AutoBase {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose start = poseFactory.of(56.5367, 10.1466, 90);
+    private final Pose start = poseFactory.of(56.5367, 10.1466, -90);
     private final Pose point1 = poseFactory.of(9.0733, 8, 180);
     private final Pose point1Control1 = poseFactory.of(56.8862, 23.9709, 0);
     private final Pose point1Control2 = poseFactory.of(44.543, 9.481, 0);
@@ -41,14 +41,20 @@ public class UpShootGardenDownShoot extends AutoBase {
     protected void scheduleAuto() {
         drivetrain.setPose(start);
         schedule(
-            startFlywheel(),
-            shoot(),
-            parallelRace(
-                    intake(),
-                    follow(path1())),
-            follow(path2()),
-            shoot(),
-            follow(path3())
+                sequential(
+                    startFlywheel(),
+                    pause(3000),
+                    shoot(),
+                    parallelRace(
+                            intake(),
+                            sequential(
+                                    follow(path1()),
+                                    pause(1000))),
+                    follow(path2()),
+                    shoot(),
+                    follow(path3()),
+                    stopCommand()
+                )
         );
     }
 }

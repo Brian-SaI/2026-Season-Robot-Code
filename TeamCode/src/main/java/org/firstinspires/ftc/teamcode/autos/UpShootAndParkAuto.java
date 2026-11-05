@@ -6,15 +6,11 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
-import org.firstinspires.ftc.teamcode.Commands.StartFlyWheelCommand;
-import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-
 @Autonomous(name="Up Shoot and Park", group="Comp")
 public class UpShootAndParkAuto extends AutoBase{
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose start = poseFactory.of(56.203, 9.6241, 90);
+    private final Pose start = poseFactory.of(56.203, 9.6241, -90);
     private final Pose point1 = poseFactory.of(13.8203, 94.0602, -90);
     private final Pose point1Control1 = poseFactory.of(4.4111, 41.7574, 0);
 
@@ -26,10 +22,12 @@ public class UpShootAndParkAuto extends AutoBase{
     protected void scheduleAuto() {
         drivetrain.setPose(start);
         schedule(
-                sequencial(
+                sequential(
                         startFlywheel(),
+                        pause(3000),
                         shoot(),
-                        follow(path1())
+                        follow(path1()),
+                        stopCommand()
                 )
         );
     }
