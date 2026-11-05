@@ -71,10 +71,9 @@ public class ShooterSubsystem extends SubsystemBase {
         pShooter.setVelocity(0);
         nShooter.setVelocity(0);
 
-        PIDFCoefficients pidf = pShooter.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
-        ShooterParams.SHOOTER_F = pidf.f;
-        ShooterParams.SHOOTER_D = pidf.d;
-        ShooterParams.SHOOTER_P = pidf.p;
+
+
+        setPID();
 
        // kicker = hMap.get(DcMotorEx.class, "kicker");
     }

@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.button.Trigger;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.Commands.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.PointToAprilTagCommand;
 import org.firstinspires.ftc.teamcode.Commands.StartFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.Commands.StopFlyWheelCommand;
+import org.firstinspires.ftc.teamcode.GobildaIndicatorLight;
 import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrivetrain;
@@ -63,6 +65,7 @@ public class RobotContainer extends CommandOpMode {
     private StopFlyWheelCommand stopFlyWheelCommand;
     private PointToAprilTagCommand pointToAprilTagCommand;
     private VisionSubsystem visionSubsystem;
+    private GobildaIndicatorLight blinky;
 
     // Controllers
     private GamepadEx driverController;
@@ -88,6 +91,7 @@ public class RobotContainer extends CommandOpMode {
         shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, visionSubsystem);
         drivetrain = new MecanumDrivetrain(follower);
         pointToAprilTagCommand= new PointToAprilTagCommand(visionSubsystem, drivetrain);
+        blinky = new GobildaIndicatorLight(hardwareMap, "beacon");
 
 
         // Commands
@@ -111,10 +115,9 @@ public class RobotContainer extends CommandOpMode {
         shootCommand = new ShootCommand(shooterSubsystem, indexerSubsystem);
 
         // Intake Commands
-        manipulatorController.getGamepadButton(GamepadKeys.Button.B).whileHeld(intakeCommand);
-        manipulatorController.getGamepadButton(GamepadKeys.Button.Y).whileHeld(outtakeCommand);
-        manipulatorController.getGamepadButton(GamepadKeys.Button.X).whileHeld(shootCommand);
-
+        manipulatorController.getGamepadButton(GamepadKeys.Button.SQUARE).whenHeld(intakeCommand);
+        manipulatorController.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenHeld(outtakeCommand);
+        manipulatorController.getGamepadButton(GamepadKeys.Button.CIRCLE).whenHeld(shootCommand);
         new Trigger(() -> manipulatorController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
                 .whenActive(startFlyWheelCommand)
                 .whenInactive(stopFlyWheelCommand);
@@ -137,6 +140,16 @@ public class RobotContainer extends CommandOpMode {
     @Override
     public void run() {
         super.run(); // runs the CommandScheduler
+         Double bearing = visionSubsystem.getTargetBearing();
+         if (bearing == null) {
+            blinky.setColor(GobildaIndicatorLight.Color.OFF);
+         } else if (bearing <= 5.0 && bearing >= -5.0) {
+             blinky.setColor(GobildaIndicatorLight.Color.GREEN);
+
+         } else {
+             blinky.setColor(GobildaIndicatorLight.Color.YELLOW);
+
+         }
         telemetry.addData("Heading",drivetrain.getPose().heading());
         telemetry.update();
     }
