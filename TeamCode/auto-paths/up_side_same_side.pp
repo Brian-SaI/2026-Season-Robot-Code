@@ -1,95 +1,133 @@
 {
+  "version": "2.0.0",
+  "timestamp": "2026-11-05T01:14:16.509Z",
   "startPoint": {
-    "x": 56,
-    "y": 8,
-    "headingDeg": 90,
-    "locked": false
+    "x": 56.536662452591656,
+    "y": 10.146649810366625,
+    "locked": false,
+    "headingDeg": 90
   },
   "lines": [
     {
-      "kind": "atomic",
-      "id": "line-musi86n6-s3suom",
-      "name": "Path 1",
-      "endPoint": {
-        "x": 56,
-        "y": 36
-      },
-      "controlPoints": [],
-      "heading": {
-        "type": "linear",
-        "startDeg": 90,
-        "endDeg": 90
-      },
-      "color": "#ffc516",
+      "id": "line-musifu5h-5nh5bf",
+      "color": "#ADAAA5",
+      "name": "",
       "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
-    },
-    {
+      "waitAfterName": "",
       "kind": "atomic",
-      "id": "line-musifu5h-5nh5bf",
       "endPoint": {
-        "x": 8,
+        "x": 9.073324905183313,
         "y": 8
       },
-      "controlPoints": [],
+      "controlPoints": [
+        {
+          "x": 56.88621997471555,
+          "y": 23.97092288242731
+        },
+        {
+          "x": 44.54298356510746,
+          "y": 9.481036662452594
+        }
+      ],
       "heading": {
-        "type": "tangential",
-        "reverse": true
-      },
-      "color": "#ADAAA5",
-      "locked": false,
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": ""
+        "type": "piecewise",
+        "reverse": true,
+        "degrees": -90,
+        "startDeg": 0,
+        "endDeg": 0,
+        "piecewiseHeading": {
+          "segments": [
+            {
+              "startProgress": 0,
+              "endProgress": 0.5018495684340321,
+              "interpolationType": "linear",
+              "reversed": false,
+              "continueFromPrevious": false,
+              "parameters": {
+                "startDeg": -90,
+                "endDeg": 180
+              }
+            },
+            {
+              "startProgress": 0.5018495684340321,
+              "endProgress": 1,
+              "interpolationType": "constant",
+              "reversed": false,
+              "continueFromPrevious": false,
+              "parameters": {
+                "degrees": 180
+              }
+            }
+          ]
+        }
+      }
     },
     {
-      "kind": "atomic",
       "id": "line-musig8zo-iy4rnh",
-      "endPoint": {
-        "x": 56.441497659906396,
-        "y": 30.039781591263658
-      },
-      "controlPoints": [],
-      "heading": {
-        "type": "tangential",
-        "reverse": false
-      },
       "color": "#C57C68",
+      "name": "",
       "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
-    },
-    {
+      "waitAfterName": "",
       "kind": "atomic",
-      "id": "line-musihg95-m7dxgw",
       "endPoint": {
-        "x": 56.353354134165365,
-        "y": 36.21450858034321
+        "x": 58.58814747027302,
+        "y": 8.931058455991849
       },
-      "controlPoints": [],
+      "controlPoints": [
+        {
+          "x": 12.164348925410872,
+          "y": 18.783185840707965
+        },
+        {
+          "x": 27.90644753476612,
+          "y": 27.190897597977244
+        },
+        {
+          "x": 59.92730720606827,
+          "y": 29.874209860935526
+        }
+      ],
       "heading": {
-        "type": "tangential",
-        "reverse": false
-      },
-      "color": "#C6965B",
+        "type": "linear",
+        "reverse": false,
+        "degrees": 0,
+        "startDeg": 180,
+        "endDeg": -90,
+        "piecewiseHeading": {
+          "segments": [
+            {
+              "startProgress": 0,
+              "endProgress": 1,
+              "interpolationType": "linear",
+              "reversed": false,
+              "parameters": {
+                "startDeg": 0,
+                "endDeg": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "line-musihlpe-8xhnzw",
+      "color": "#BC875A",
+      "name": "",
       "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
-    },
-    {
+      "waitAfterName": "",
       "kind": "atomic",
-      "id": "line-musihlpe-8xhnzw",
       "endPoint": {
-        "x": 8.397815912636501,
-        "y": 102.22698907956317
+        "x": 13.764440438553065,
+        "y": 94.35593977488556
       },
       "controlPoints": [
         {
@@ -98,15 +136,26 @@
         }
       ],
       "heading": {
-        "type": "tangential",
-        "reverse": true
-      },
-      "color": "#BC875A",
-      "locked": false,
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": ""
+        "type": "constant",
+        "reverse": true,
+        "degrees": -90,
+        "startDeg": 0,
+        "endDeg": 0,
+        "piecewiseHeading": {
+          "segments": [
+            {
+              "startProgress": 0,
+              "endProgress": 1,
+              "interpolationType": "linear",
+              "reversed": false,
+              "parameters": {
+                "startDeg": 0,
+                "endDeg": 0
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "shapes": [
@@ -170,10 +219,6 @@
   "sequence": [
     {
       "kind": "path",
-      "lineId": "line-musi86n6-s3suom"
-    },
-    {
-      "kind": "path",
       "lineId": "line-musifu5h-5nh5bf"
     },
     {
@@ -182,50 +227,20 @@
     },
     {
       "kind": "path",
-      "lineId": "line-musihg95-m7dxgw"
-    },
-    {
-      "kind": "path",
       "lineId": "line-musihlpe-8xhnzw"
     }
   ],
   "fieldPoints": [],
-  "activePaths": [],
-  "settings": {
-    "xVelocity": 75,
-    "yVelocity": 65,
+  "robot": {
+    "forwardVelocity": 75,
+    "strafeVelocity": 65,
     "aVelocity": 3.141592653589793,
     "kFriction": 0.1,
+    "rLength": 16,
     "rWidth": 16,
-    "rHeight": 16,
     "safetyMargin": 1,
-    "maxVelocity": 40,
     "maxAcceleration": 30,
-    "maxDeceleration": 30,
-    "fieldMap": "biobuzz.webp",
-    "robotImage": "/robot.png",
-    "showGhostPaths": false,
-    "showOnionLayers": false,
-    "onionLayerSpacing": 3,
-    "onionColor": "#dc2626",
-    "onionNextPointOnly": false,
-    "showHeadingArrow": false,
-    "showCurrentTValue": false,
-    "leftPanelWidth": 370,
-    "rightPanelWidth": 620,
-    "headingArrowLength": 50,
-    "headingArrowColor": "#ffffff",
-    "headingArrowThickness": 2,
-    "pathOpacity": 1,
-    "leftPanelMinWidth": 0,
-    "rightPanelMinWidth": 0,
-    "penToolMaxPaths": 8,
-    "curveThroughMaxPoints": 4,
-    "experimentalFeatures": {
-      "optimize": false,
-      "curveThrough": false
-    }
+    "maxDeceleration": 30
   },
-  "version": "1.5.0",
-  "timestamp": "2026-10-03T15:00:18.756Z"
+  "activePaths": []
 }

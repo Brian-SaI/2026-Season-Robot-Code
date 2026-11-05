@@ -1,35 +1,16 @@
 {
+  "version": "2.0.0",
+  "timestamp": "2026-11-05T01:19:59.836Z",
   "startPoint": {
-    "x": 57.01506456241032,
-    "y": 2.924677187948348,
+    "x": 56.536662452591656,
+    "y": 10.146649810366625,
     "locked": false,
     "headingDeg": 90
   },
   "lines": [
     {
-      "id": "line-mushxodu-ls17fu",
-      "color": "#ffc516",
-      "name": "Path 1",
-      "locked": false,
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": "",
-      "kind": "atomic",
-      "endPoint": {
-        "x": 56,
-        "y": 36
-      },
-      "controlPoints": [],
-      "heading": {
-        "type": "linear",
-        "startDeg": 90,
-        "endDeg": 90
-      }
-    },
-    {
-      "id": "line-musi1b0z-rpxsf5",
-      "color": "#8878CC",
+      "id": "line-musifu5h-5nh5bf",
+      "color": "#ADAAA5",
       "name": "",
       "locked": false,
       "waitBeforeMs": 0,
@@ -38,43 +19,55 @@
       "waitAfterName": "",
       "kind": "atomic",
       "endPoint": {
-        "x": 8,
+        "x": 9.073324905183313,
         "y": 8
-      },
-      "controlPoints": [],
-      "heading": {
-        "type": "tangential",
-        "reverse": true
-      }
-    },
-    {
-      "id": "line-musi42sj-qfjev3",
-      "color": "#ADCA66",
-      "name": "",
-      "locked": false,
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": "",
-      "kind": "atomic",
-      "endPoint": {
-        "x": 59.27106084243371,
-        "y": 129.40020475819034
       },
       "controlPoints": [
         {
-          "x": 18.778694404591107,
-          "y": 114.5373475609756
+          "x": 56.88621997471555,
+          "y": 23.97092288242731
+        },
+        {
+          "x": 44.54298356510746,
+          "y": 9.481036662452594
         }
       ],
       "heading": {
-        "type": "tangential",
-        "reverse": false
+        "type": "piecewise",
+        "reverse": true,
+        "degrees": -90,
+        "startDeg": 0,
+        "endDeg": 0,
+        "piecewiseHeading": {
+          "segments": [
+            {
+              "startProgress": 0,
+              "endProgress": 0.5018495684340321,
+              "interpolationType": "linear",
+              "reversed": false,
+              "continueFromPrevious": false,
+              "parameters": {
+                "startDeg": -90,
+                "endDeg": 180
+              }
+            },
+            {
+              "startProgress": 0.5018495684340321,
+              "endProgress": 1,
+              "interpolationType": "constant",
+              "reversed": false,
+              "continueFromPrevious": false,
+              "parameters": {
+                "degrees": 180
+              }
+            }
+          ]
+        }
       }
     },
     {
-      "id": "line-musi4xqd-kwfmnc",
-      "color": "#C76A67",
+      "id": "line-musig8zo-iy4rnh",
+      "color": "#C57C68",
       "name": "",
       "locked": false,
       "waitBeforeMs": 0,
@@ -83,13 +76,81 @@
       "waitAfterName": "",
       "kind": "atomic",
       "endPoint": {
-        "x": 58.9204368174727,
-        "y": 103.45241809672389
+        "x": 30.323924967112465,
+        "y": 130.2167727417061
       },
-      "controlPoints": [],
+      "controlPoints": [
+        {
+          "x": 28.62199747155499,
+          "y": 27.012010113780025
+        },
+        {
+          "x": 15.205436156763591,
+          "y": 91.41150442477877
+        }
+      ],
       "heading": {
-        "type": "tangential",
-        "reverse": true
+        "type": "linear",
+        "reverse": false,
+        "degrees": 0,
+        "startDeg": 180,
+        "endDeg": 120,
+        "piecewiseHeading": {
+          "segments": [
+            {
+              "startProgress": 0,
+              "endProgress": 1,
+              "interpolationType": "linear",
+              "reversed": false,
+              "parameters": {
+                "startDeg": 0,
+                "endDeg": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "line-musihlpe-8xhnzw",
+      "color": "#BC875A",
+      "name": "",
+      "locked": false,
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": "",
+      "kind": "atomic",
+      "endPoint": {
+        "x": 13.048890501764193,
+        "y": 93.8192773222939
+      },
+      "controlPoints": [
+        {
+          "x": 37.59520325187218,
+          "y": 100.80768138437294
+        }
+      ],
+      "heading": {
+        "type": "linear",
+        "reverse": true,
+        "degrees": -90,
+        "startDeg": 120,
+        "endDeg": 90,
+        "piecewiseHeading": {
+          "segments": [
+            {
+              "startProgress": 0,
+              "endProgress": 1,
+              "interpolationType": "linear",
+              "reversed": false,
+              "parameters": {
+                "startDeg": 0,
+                "endDeg": 0
+              }
+            }
+          ]
+        }
       }
     }
   ],
@@ -154,58 +215,28 @@
   "sequence": [
     {
       "kind": "path",
-      "lineId": "line-mushxodu-ls17fu"
+      "lineId": "line-musifu5h-5nh5bf"
     },
     {
       "kind": "path",
-      "lineId": "line-musi1b0z-rpxsf5"
+      "lineId": "line-musig8zo-iy4rnh"
     },
     {
       "kind": "path",
-      "lineId": "line-musi42sj-qfjev3"
-    },
-    {
-      "kind": "path",
-      "lineId": "line-musi4xqd-kwfmnc"
+      "lineId": "line-musihlpe-8xhnzw"
     }
   ],
   "fieldPoints": [],
-  "activePaths": [],
-  "settings": {
-    "xVelocity": 75,
-    "yVelocity": 65,
+  "robot": {
+    "forwardVelocity": 75,
+    "strafeVelocity": 65,
     "aVelocity": 3.141592653589793,
     "kFriction": 0.1,
+    "rLength": 16,
     "rWidth": 16,
-    "rHeight": 16,
     "safetyMargin": 1,
-    "maxVelocity": 40,
     "maxAcceleration": 30,
-    "maxDeceleration": 30,
-    "fieldMap": "biobuzz.webp",
-    "robotImage": "/robot.png",
-    "showGhostPaths": false,
-    "showOnionLayers": false,
-    "onionLayerSpacing": 3,
-    "onionColor": "#dc2626",
-    "onionNextPointOnly": false,
-    "showHeadingArrow": false,
-    "showCurrentTValue": false,
-    "leftPanelWidth": 370,
-    "rightPanelWidth": 620,
-    "headingArrowLength": 50,
-    "headingArrowColor": "#ffffff",
-    "headingArrowThickness": 2,
-    "pathOpacity": 1,
-    "leftPanelMinWidth": 0,
-    "rightPanelMinWidth": 0,
-    "penToolMaxPaths": 8,
-    "curveThroughMaxPoints": 4,
-    "experimentalFeatures": {
-      "optimize": false,
-      "curveThrough": false
-    }
+    "maxDeceleration": 30
   },
-  "version": "1.5.0",
-  "timestamp": "2026-10-15T23:58:34.678Z"
+  "activePaths": []
 }

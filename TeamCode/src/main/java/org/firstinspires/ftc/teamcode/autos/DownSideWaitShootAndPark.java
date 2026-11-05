@@ -8,10 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(name = "Down Side Wait Shoot And Park", group = "Comp")
 public class DownSideWaitShootAndPark extends AutoBase{
-
-
-
-
         private final PoseFactory poseFactory = PoseFactory.degrees();
 
         private final Pose start = poseFactory.of(60.0382, 133.3167, 90);
@@ -21,6 +17,7 @@ public class DownSideWaitShootAndPark extends AutoBase{
         public Path path1() {
             return Paths.curve(start, point1Control1, point1).constant(point1);
         }
+
     @Override
     protected void scheduleAuto() {
         drivetrain.setPose(start);
