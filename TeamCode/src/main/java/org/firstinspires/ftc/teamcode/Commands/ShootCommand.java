@@ -14,7 +14,7 @@ public class ShootCommand extends CommandBase {
         this.shooterSubsystem = shooterSubsystem;
         this.indexerSubsystem = indexerSubsystem;
 
-        addRequirements(shooterSubsystem, indexerSubsystem);
+        addRequirements(shooterSubsystem);
 
     }
 
@@ -28,7 +28,7 @@ public class ShootCommand extends CommandBase {
     public void execute() {
         if (shooterSubsystem.isTargetVelocity()) {
             shooterSubsystem.openGate();
-            indexerSubsystem.runIndexer();
+            indexerSubsystem.runIndexerFast();
         }
     }
 
@@ -40,6 +40,6 @@ public class ShootCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         shooterSubsystem.closeGate();
-        indexerSubsystem.stopIndexer();
+        indexerSubsystem.stopIndexerFast();
     }
 }

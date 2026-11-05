@@ -15,6 +15,9 @@ public class IndexerSubsystem extends SubsystemBase {
     public static double SLOW_SPEED=0.45;
     public static double FAST_SPEED= 0.75;
 
+    private boolean isSlowRequested = false;
+    private boolean isFastRequested = false;
+
     public IndexerSubsystem(final HardwareMap hardwareMap) {
         indexer = hardwareMap.get(DcMotorEx.class,"Indexer");
         indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -22,14 +25,36 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public void runIndexer() {
-        indexer.setPower(SLOW_SPEED);
+        isSlowRequested = true;
+        if (!isFastRequested) {
+            indexer.setPower(SLOW_SPEED);
+        }
+    }
+
+    public void runIndexerFast() {
+        isFastRequested = true;
+        indexer.setPower(FAST_SPEED);
     }
     public void reverseIndexer() {
+        isSlowRequested = false;
+        isFastRequested = false;
         indexer.setPower(-SLOW_SPEED);
     }
 
     public void stopIndexer() {
-        indexer.setPower(0);
+        isSlowRequested = false;
+        if (!isFastRequested) {
+            indexer.setPower(0);
+        }
+    }
+
+    public void stopIndexerFast() {
+        isFastRequested = false;
+        if (isSlowRequested) {
+            runIndexer();
+        } else {
+            stopIndexer();
+        }
     }
 }
 
