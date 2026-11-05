@@ -61,16 +61,20 @@ public abstract class AutoBase extends CommandOpMode {
         TelemetryPacket packet = new TelemetryPacket();
         Canvas canvas = packet.fieldOverlay();
 
+        double xDashboard = pose.y() - 72;
+        double yDashboard = 72 - pose.x();
+        double headingDashboard = pose.heading() - (Math.PI / 2.0);
+
         // 1. Set the color and draw the robot's main chassis (circle)
         canvas.setStroke("blue");
-        canvas.strokeCircle(pose.x(), pose.y(), 9.0);
+        canvas.strokeCircle(xDashboard, yDashboard, 9.0);
 
         // 2. Draw a line pointing in the direction the robot is facing (Heading)
-        double headX = pose.x() + 9.0 * Math.cos(pose.heading());
-        double headY = pose.y() + 9.0 * Math.sin(pose.heading());
+        double headX = xDashboard + 9.0 * Math.cos(headingDashboard);
+        double headY = yDashboard + 9.0 * Math.sin(headingDashboard);
 
         canvas.setStroke("red");
-        canvas.strokeLine(pose.x(), pose.y(), headX, headY);
+        canvas.strokeLine(xDashboard, yDashboard, headX, headY);
 
         // 3. Send the packet to the dashboard
         dashboard.sendTelemetryPacket(packet);
