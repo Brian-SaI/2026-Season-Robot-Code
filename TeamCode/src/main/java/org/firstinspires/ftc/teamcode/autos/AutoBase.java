@@ -85,6 +85,9 @@ public abstract class AutoBase extends CommandOpMode {
     protected Command follow(Path path) {
         return new FollowPathCommand(drivetrain, path);
     }
+    protected Command follow(Path path, double tolarance) {
+        return new FollowPathCommand(drivetrain, path, tolarance);
+    }
 
     protected Command stopCommand() {
         return drivetrain.stopCommand();

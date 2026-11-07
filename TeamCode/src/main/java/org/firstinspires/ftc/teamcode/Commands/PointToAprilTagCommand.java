@@ -7,6 +7,8 @@ import com.seattlesolvers.solverslib.controller.PIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 
+import java.util.function.DoubleSupplier;
+
 public class PointToAprilTagCommand extends CommandBase {
 
     @Config
@@ -21,11 +23,22 @@ public class PointToAprilTagCommand extends CommandBase {
     private final VisionSubsystem visionSubsystem;
 
     PIDController autoAimController;
+    private final DoubleSupplier turn;
+    private final DoubleSupplier forward;
+    private final DoubleSupplier strafe;
 
-    public PointToAprilTagCommand(VisionSubsystem visionSubsystem, MecanumDrivetrain mecanumDrivetrain) {
+    public PointToAprilTagCommand(
+            VisionSubsystem visionSubsystem,
+            MecanumDrivetrain mecanumDrivetrain,
+            DoubleSupplier forward,
+            DoubleSupplier strafe,
+            DoubleSupplier turn) {
         this.mecanumDrivetrain = mecanumDrivetrain;
         this.visionSubsystem = visionSubsystem;
         autoAimController = new PIDController(AimParams.AIM_P, 0.0, AimParams.AIM_D);
+        this.forward = forward;
+        this.strafe = strafe;
+        this.turn = turn;
         addRequirements(mecanumDrivetrain);
     }
 
@@ -38,12 +51,11 @@ public class PointToAprilTagCommand extends CommandBase {
     @Override
     public void execute() {
         Double targetBearing = visionSubsystem.getTargetBearing();
-        if (targetBearing != null) {
-            double turnSpeed = autoAimController.calculate(targetBearing, 0);
-            mecanumDrivetrain.driveFieldCentric(0, 0, -turnSpeed);
-        } else {
-            mecanumDrivetrain.driveFieldCentric(0, 0, 0.0);
-        }
+        double turnSpeed = targetBearing != null ?
+                -autoAimController.calculate(targetBearing, 0) :
+                turn.getAsDouble();
+        mecanumDrivetrain.driveFieldCentric(forward.getAsDouble(),strafe.getAsDouble(), turnSpeed);
+
         if (AimParams.RESET_AIM_PID) {
             AimParams.RESET_AIM_PID = false;
             autoAimController.setPID(AimParams.AIM_P, 0.0, AimParams.AIM_D);

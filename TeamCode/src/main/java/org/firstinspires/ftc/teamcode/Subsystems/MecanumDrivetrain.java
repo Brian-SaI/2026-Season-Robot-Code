@@ -44,14 +44,17 @@ public class MecanumDrivetrain extends SubsystemBase {
     public void startFollowing(Path path) {
         follower.follow(path);
     }
-
+    public boolean followCurrentPath(double tollarance) {
+        follower.update();
+        return follower.atParametricEnd() || follower.distanceToEndpoint() < tollarance;
+    }
     public boolean followCurrentPath() {
         follower.update();
         return follower.isBusy();
     }
 
     public Command stopCommand() {
-        return runOnce(() -> follower.stop());
+        return runOnce(this::stop);
     }
 
 }

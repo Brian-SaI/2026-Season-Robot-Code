@@ -90,7 +90,6 @@ public class RobotContainer extends CommandOpMode {
         visionSubsystem = new VisionSubsystem(hardwareMap, telemetry, alliance);
         shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, visionSubsystem);
         drivetrain = new MecanumDrivetrain(follower);
-        pointToAprilTagCommand= new PointToAprilTagCommand(visionSubsystem, drivetrain);
         blinky = new GobildaIndicatorLight(hardwareMap, "beacon");
 
 
@@ -99,6 +98,11 @@ public class RobotContainer extends CommandOpMode {
                 () -> driverController.getLeftY()*driveSpeed(),
                 () -> -driverController.getLeftX()*driveSpeed(),
                 () -> -driverController.getRightX()*driveSpeed());
+        pointToAprilTagCommand= new PointToAprilTagCommand(visionSubsystem, drivetrain,
+                () -> driverController.getLeftY()*driveSpeed(),
+                () -> -driverController.getLeftX()*driveSpeed(),
+                () -> -driverController.getRightX()*driveSpeed());
+
 
         driverController.getGamepadButton(GamepadKeys.Button.A).whileHeld(pointToAprilTagCommand);
 

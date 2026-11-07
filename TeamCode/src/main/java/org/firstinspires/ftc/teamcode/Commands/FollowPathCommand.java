@@ -16,11 +16,17 @@ public class FollowPathCommand extends CommandBase {
     private final MecanumDrivetrain drivetrain;
     private final Path path;
     private boolean stillRunning;
+    private Double tolarance;
 
-    public FollowPathCommand(MecanumDrivetrain drivetrain, Path path) {
+    public FollowPathCommand(MecanumDrivetrain drivetrain, Path path,Double tolarance) {
         this.drivetrain = drivetrain;
         this.path = path;
+        this.tolarance = tolarance;
         addRequirements(this.drivetrain);
+    }
+
+    public FollowPathCommand(MecanumDrivetrain drivetrain, Path path) {
+        this(drivetrain, path, null);
     }
 
     @Override
@@ -30,7 +36,11 @@ public class FollowPathCommand extends CommandBase {
 
     @Override
     public void execute() {
-        stillRunning = drivetrain.followCurrentPath();
+        if (tolarance != null) {
+            stillRunning = drivetrain.followCurrentPath(tolarance);
+        } else {
+            stillRunning = drivetrain.followCurrentPath();
+        }
     }
 
     @Override
