@@ -33,8 +33,14 @@ public class ShooterSubsystem extends SubsystemBase {
         public static double SHOOTER_F=12.6189;
         public static boolean RESET_PID = false;
 
+        public static double DEFAULT_RPM_P = 3200;
+        public static double DEFALUT_RPM_N = 3275;
         public static double pTargetRPM = 0.0;
         public static double nTargetRPM = 0.0;
+        public static boolean autoRPM = false;
+        public static double targetDistance = 0.0;
+        public static long targetDistanceAgeMs = 0;
+        public static long targetDistanceLastMs = 0;
 
         public static double LEFT_GATE_OPEN = 1.0;
         public static double RIGHT_GATE_OPEN = 0.02;
@@ -77,12 +83,8 @@ public class ShooterSubsystem extends SubsystemBase {
         pShooter.setVelocity(0);
         nShooter.setVelocity(0);
 
-
-
         setPID();
         closeGate();
-
-       // kicker = hMap.get(DcMotorEx.class, "kicker");
     }
 
     public void setPID() {
@@ -92,25 +94,29 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        Double distanceToTarget = null;//visionSubsystem.getDistanceToTarget();
+        long now = System.currentTimeMillis();
+        Double distanceToTarget = visionSubsystem.getDistanceToTarget();
         telemetry.addData("Target Distance", distanceToTarget == null ? 0 : distanceToTarget);
+        if (distanceToTarget != null) {
+            ShooterParams.targetDistance = distanceToTarget;
+            ShooterParams.targetDistanceLastMs = now;
+            ShooterParams.targetDistanceAgeMs = 0;
+        } else {
+            ShooterParams.targetDistanceAgeMs = now - ShooterParams.targetDistanceLastMs;
+        }
 
         if (ShooterParams.RESET_PID) {
             setPID();
             ShooterParams.RESET_PID = false;
         }
 
-        telemetry.addData("Pollen tps", pShooter.getVelocity());
-        telemetry.addData("Pollen tps Target", pollenRPMToVelocity(ShooterParams.pTargetRPM));
+        runShooter(ShooterParams.autoRPM); // Run this every loop for now so we can tune
+
         telemetry.addData("Pollen RPM", getPollenRPM());
         telemetry.addData("Pollen RPM Target", ShooterParams.pTargetRPM);
-
         telemetry.addData("Nectar RPM", getNectarRPM());
         telemetry.addData("Nectar RPM Target", ShooterParams.nTargetRPM);
-
-        telemetry.addData("Foo", System.currentTimeMillis() / 1000);
-
-        runShooter(); // Run this every loop for now so we can tune
+        telemetry.addData("Time", now / 1000);
     }
 
     // Do nothing command to keep the periodic function being called.
@@ -121,10 +127,19 @@ public class ShooterSubsystem extends SubsystemBase {
     public void runShooter(double nRPM, double pRPM ) {
         ShooterParams.pTargetRPM = pRPM;
         ShooterParams.nTargetRPM = nRPM;
-        runShooter();
+        ShooterParams.autoRPM = false;
+        runShooter(false);
     }
 
-    public void runShooter() {
+    public void runShooter(boolean autoRPM) {
+        ShooterParams.autoRPM = autoRPM;
+        if (autoRPM && ShooterParams.targetDistanceAgeMs <= 1000) {
+            ShooterParams.pTargetRPM = calculatePollenRpm(ShooterParams.targetDistance);
+            ShooterParams.nTargetRPM = calculateNectarRpm(ShooterParams.targetDistance);
+        } else if (autoRPM) {
+            ShooterParams.pTargetRPM = ShooterParams.DEFAULT_RPM_P;
+            ShooterParams.nTargetRPM = ShooterParams.DEFALUT_RPM_N;
+        }
         setPollenRPM(ShooterParams.pTargetRPM);
         setNectarRPM(ShooterParams.nTargetRPM);
     }
@@ -135,11 +150,19 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double calculatePollenRpm(double distance) {
-        return 0.0;
+        return interpolate(distance,
+                ShooterParams.CLOSE_DISTANCE_P,
+                ShooterParams.CLOSE_RPM_P,
+                ShooterParams.FAR_DISTANCE_P,
+                ShooterParams.FAR_RPM_P);
     }
 
     public double calculateNectarRpm(double distance) {
-        return 0.0;
+        return interpolate(distance,
+                ShooterParams.CLOSE_DISTANCE_N,
+                ShooterParams.CLOSE_RPM_N,
+                ShooterParams.FAR_DISTANCE_N,
+                ShooterParams.FAR_RPM_N);
     }
 
     public double interpolate(double x, double x1, double y1, double x2, double y2) {
