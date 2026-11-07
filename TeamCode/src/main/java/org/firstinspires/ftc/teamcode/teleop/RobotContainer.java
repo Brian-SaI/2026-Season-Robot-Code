@@ -66,6 +66,7 @@ public class RobotContainer extends CommandOpMode {
     private PointToAprilTagCommand pointToAprilTagCommand;
     private VisionSubsystem visionSubsystem;
     private GobildaIndicatorLight blinky;
+    private GobildaIndicatorLight blinky2;
 
     // Controllers
     private GamepadEx driverController;
@@ -91,6 +92,7 @@ public class RobotContainer extends CommandOpMode {
         shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, visionSubsystem);
         drivetrain = new MecanumDrivetrain(follower);
         blinky = new GobildaIndicatorLight(hardwareMap, "beacon");
+        blinky2 = new GobildaIndicatorLight(hardwareMap, "beacon2");
 
 
         // Commands
@@ -148,13 +150,14 @@ public class RobotContainer extends CommandOpMode {
         super.run(); // runs the CommandScheduler
          Double bearing = visionSubsystem.getTargetBearing();
          if (bearing == null) {
-            blinky.setColor(GobildaIndicatorLight.Color.OFF);
+             blinky.setColor(GobildaIndicatorLight.Color.OFF);
+             blinky2.setColor(GobildaIndicatorLight.Color.OFF);
          } else if (bearing <= 5.0 && bearing >= -5.0) {
              blinky.setColor(GobildaIndicatorLight.Color.GREEN);
-
+             blinky2.setColor(GobildaIndicatorLight.Color.GREEN);
          } else {
              blinky.setColor(GobildaIndicatorLight.Color.RED);
-
+             blinky2.setColor(GobildaIndicatorLight.Color.RED);
          }
         telemetry.addData("Heading",drivetrain.getPose().heading());
          telemetry.addData("Pose", drivetrain.getPose());
