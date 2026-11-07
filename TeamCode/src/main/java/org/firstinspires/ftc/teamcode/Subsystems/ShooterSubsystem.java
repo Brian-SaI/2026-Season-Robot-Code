@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
@@ -30,10 +29,10 @@ public class ShooterSubsystem extends SubsystemBase {
         public static double pTargetRPM = 0.0;
         public static double nTargetRPM = 0.0;
 
-        public static double GATE_OPEN_1 = 0.0;
-        public static double GATE_OPEN_2 = 0.0;
-        public static double GATE_CLOSED_1 = 0.0;
-        public static double GATE_CLOSED_2 = 0.0;
+        public static double LEFT_GATE_OPEN = 1.0;
+        public static double RIGHT_GATE_OPEN = 0.02;
+        public static double LEFT_GATE_CLOSED = 0.75;
+        public static double RIGHT_GATE_CLOSED = 0.26;
     }
 
     static final double P_GEAR_RATIO = 20.0 / 21.0;
@@ -45,8 +44,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final DcMotorEx pShooter;
     private final DcMotorEx nShooter;
 
-    private final Servo gate1;
-    private final Servo gate2;
+    private final Servo leftGate;
+    private final Servo rightGate;
 
     private final Telemetry telemetry;
 
@@ -54,11 +53,11 @@ public class ShooterSubsystem extends SubsystemBase {
         this.telemetry = telemetry;
         pShooter = hMap.get(DcMotorEx.class, "PollenShoot");
         nShooter = hMap.get(DcMotorEx.class,"NectarShoot");
-        gate1 = hMap.get(Servo.class, "gate1");
-        gate2 = hMap.get(Servo.class, "gate2");
+        leftGate = hMap.get(Servo.class, "Left Gate");
+        rightGate = hMap.get(Servo.class, "Right Gate");
 
-        gate1.setPosition(ShooterParams.GATE_OPEN_1);
-        gate2.setPosition(ShooterParams.GATE_OPEN_2);
+        leftGate.setPosition(ShooterParams.LEFT_GATE_OPEN);
+        rightGate.setPosition(ShooterParams.RIGHT_GATE_OPEN);
 
         this.visionSubsystem = visionSubsystem;
 
@@ -74,6 +73,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
         setPID();
+        closeGate();
 
        // kicker = hMap.get(DcMotorEx.class, "kicker");
     }
@@ -142,14 +142,14 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     public void openGate() {
         telemetry.addLine("Shooting");
-        gate1.setPosition(ShooterParams.GATE_OPEN_1);
-        gate2.setPosition(ShooterParams.GATE_OPEN_2);
+        leftGate.setPosition(ShooterParams.LEFT_GATE_OPEN);
+        rightGate.setPosition(ShooterParams.RIGHT_GATE_OPEN);
     }
 
     public void closeGate() {
         //kicker.setPower(0);
-        gate1.setPosition(ShooterParams.GATE_CLOSED_1);
-        gate2.setPosition(ShooterParams.GATE_CLOSED_2);
+        leftGate.setPosition(ShooterParams.LEFT_GATE_CLOSED);
+        rightGate.setPosition(ShooterParams.RIGHT_GATE_CLOSED);
     }
 
     void setPollenRPM(double rpm) {

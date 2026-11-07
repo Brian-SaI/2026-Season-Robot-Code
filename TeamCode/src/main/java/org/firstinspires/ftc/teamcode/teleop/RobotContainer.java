@@ -116,12 +116,14 @@ public class RobotContainer extends CommandOpMode {
 
         // Intake Commands
         manipulatorController.getGamepadButton(GamepadKeys.Button.SQUARE).whenHeld(intakeCommand);
-        manipulatorController.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenHeld(outtakeCommand);
-        manipulatorController.getGamepadButton(GamepadKeys.Button.CIRCLE).whenHeld(shootCommand);
+        manipulatorController.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenHeld(shootCommand);
+        manipulatorController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenHeld(outtakeCommand);
         new Trigger(() -> manipulatorController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
                 .whenActive(startFlyWheelCommand)
                 .whenInactive(stopFlyWheelCommand);
-
+//        manipulatorController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+//                .whenHeld(startFlyWheelCommand)
+//                .whenReleased(stopFlyWheelCommand);
         drivetrain.calibratePinpoint();
         drivetrain.setPose(new Pose(0,0,0));
     }
@@ -131,10 +133,10 @@ public class RobotContainer extends CommandOpMode {
         }
 
         if (driverController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) >= 0.5){
-            return 0.75;
+            return 0.9;
 
         }
-        return 0.5;
+        return 0.75;
     }
 
     @Override
@@ -147,7 +149,7 @@ public class RobotContainer extends CommandOpMode {
              blinky.setColor(GobildaIndicatorLight.Color.GREEN);
 
          } else {
-             blinky.setColor(GobildaIndicatorLight.Color.YELLOW);
+             blinky.setColor(GobildaIndicatorLight.Color.RED);
 
          }
         telemetry.addData("Heading",drivetrain.getPose().heading());
