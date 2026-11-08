@@ -5,20 +5,20 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.button.Trigger;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.Alliance;
+import org.firstinspires.ftc.teamcode.Commands.AutoFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.Commands.CommandDrivetrain;
 import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
 import org.firstinspires.ftc.teamcode.Commands.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.PointToAprilTagCommand;
 import org.firstinspires.ftc.teamcode.Commands.StartFlyWheelCommand;
-import org.firstinspires.ftc.teamcode.Commands.StopFlyWheelCommand;
+import org.firstinspires.ftc.teamcode.Commands.IdleFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.GobildaIndicatorLight;
 import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
@@ -62,7 +62,8 @@ public class RobotContainer extends CommandOpMode {
     private OuttakeCommand outtakeCommand;
 
     private StartFlyWheelCommand startFlyWheelCommand;
-    private StopFlyWheelCommand stopFlyWheelCommand;
+    private AutoFlyWheelCommand autoFlyWheelCommand;
+    private IdleFlyWheelCommand idleFlyWheelCommand;
     private PointToAprilTagCommand pointToAprilTagCommand;
     private VisionSubsystem visionSubsystem;
     private GobildaIndicatorLight blinky;
@@ -117,16 +118,20 @@ public class RobotContainer extends CommandOpMode {
         intakeCommand = new IntakeCommand(intakeSubsystem, indexerSubsystem);
         outtakeCommand = new OuttakeCommand(intakeSubsystem, indexerSubsystem);
         startFlyWheelCommand = new StartFlyWheelCommand(shooterSubsystem);
-        stopFlyWheelCommand = new StopFlyWheelCommand(shooterSubsystem);
+        autoFlyWheelCommand = new AutoFlyWheelCommand(shooterSubsystem);
+        idleFlyWheelCommand = new IdleFlyWheelCommand(shooterSubsystem);
         shootCommand = new ShootCommand(shooterSubsystem, indexerSubsystem);
 
         // Intake Commands
         manipulatorController.getGamepadButton(GamepadKeys.Button.SQUARE).whenHeld(intakeCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenHeld(shootCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenHeld(outtakeCommand);
-        new Trigger(() -> manipulatorController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
+        new Trigger(() -> manipulatorController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
                 .whenActive(startFlyWheelCommand)
-                .whenInactive(stopFlyWheelCommand);
+                .whenInactive(idleFlyWheelCommand);
+        new Trigger(() -> manipulatorController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
+                .whenActive(autoFlyWheelCommand)
+                .whenInactive(idleFlyWheelCommand);
 //        manipulatorController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
 //                .whenHeld(startFlyWheelCommand)
 //                .whenReleased(stopFlyWheelCommand);

@@ -47,7 +47,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (target==null) {
             return null;
         }
-        return target.ftcPose.z;
+        return target.ftcPose.range;
     }
     public Double getTargetBearing(){
         if (target==null) {

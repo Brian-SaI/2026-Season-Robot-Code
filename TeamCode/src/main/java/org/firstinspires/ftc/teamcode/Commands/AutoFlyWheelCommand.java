@@ -4,11 +4,11 @@ import com.seattlesolvers.solverslib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
-public class StopFlyWheelCommand extends CommandBase {
+public class AutoFlyWheelCommand extends CommandBase {
 
     ShooterSubsystem shooterSubsystem;
 
-    public StopFlyWheelCommand(ShooterSubsystem shooterSubsystem) {
+    public AutoFlyWheelCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
 
         addRequirements(shooterSubsystem);
@@ -16,8 +16,7 @@ public class StopFlyWheelCommand extends CommandBase {
 
     @Override
     public void initialize() { // runs the command
-        //shooterSubsystem.runShooter(1500,1500);
-        shooterSubsystem.runShooter(2800,2800);
+        shooterSubsystem.runShooter(true);
     }
 
 
