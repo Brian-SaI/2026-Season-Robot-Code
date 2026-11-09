@@ -11,6 +11,7 @@ import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.ParallelRaceGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 
+import org.firstinspires.ftc.teamcode.Alliance;
 import org.firstinspires.ftc.teamcode.Commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
@@ -39,8 +40,8 @@ public abstract class AutoBase extends CommandOpMode {
         drivetrain.calibratePinpoint();
         intake = new IntakeSubsystem(hardwareMap);
         indexer = new IndexerSubsystem(hardwareMap);
-
-        shooter = new ShooterSubsystem(hardwareMap,telemetry, null);
+        vision = new VisionSubsystem(hardwareMap, telemetry, Alliance.RED);
+        shooter = new ShooterSubsystem(hardwareMap,telemetry, vision);
     }
 
     @Override
