@@ -19,9 +19,9 @@ public class ShooterSubsystem extends SubsystemBase {
         public static double VELOCITY_THRESHOLD = 100.0;
 
         public static double CLOSE_DISTANCE_P = 53.0;
-        public static double CLOSE_RPM_P = 3150.0;
+        public static double CLOSE_RPM_P = 3100.0;
         public static double FAR_DISTANCE_P = 69.0;
-        public static double FAR_RPM_P = 3350.0;
+        public static double FAR_RPM_P = 3300.0;
         public static double CLOSE_DISTANCE_N = 57.0;
         public static double CLOSE_RPM_N = 3100.0;
         public static double FAR_DISTANCE_N = 69.0;

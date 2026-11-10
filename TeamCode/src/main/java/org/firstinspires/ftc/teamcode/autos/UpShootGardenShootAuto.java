@@ -48,7 +48,9 @@ public class UpShootGardenShootAuto extends AutoBase {
                 shoot(),
                 parallelRace(
                         intake(),
-                        follow(path1(), 2.0)),
+                        sequential(
+                                follow(path1()),
+                                pause(1000))),
                 follow(path2()),
                 shoot(),
                 follow(path3()),
