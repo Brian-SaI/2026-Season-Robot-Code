@@ -56,6 +56,10 @@ public abstract class AutoBase extends CommandOpMode {
         telemetry.addData("Pose", drivetrain.getPose());
         telemetry.update();
     }
+    @Override
+    public void end() {
+        blackboard.put("pose", drivetrain.getPose());
+    }
 
     public void drawRobot(Pose pose) {
         FtcDashboard dashboard = FtcDashboard.getInstance();

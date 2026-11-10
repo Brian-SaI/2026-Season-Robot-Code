@@ -135,8 +135,13 @@ public class RobotContainer extends CommandOpMode {
 //        manipulatorController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
 //                .whenHeld(startFlyWheelCommand)
 //                .whenReleased(stopFlyWheelCommand);
-        drivetrain.calibratePinpoint();
-        drivetrain.setPose(new Pose(0,0,0));
+        if (blackboard.containsKey("pose")) {
+             Pose pose = (Pose) blackboard.get("pose");
+             drivetrain.setPose(pose);
+        } else {
+            drivetrain.calibratePinpoint();
+            drivetrain.setPose(new Pose(0, 0, 0));
+        }
     }
     private double driveSpeed(){
         if (driverController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) >=0.5){
@@ -167,5 +172,10 @@ public class RobotContainer extends CommandOpMode {
         telemetry.addData("Heading",drivetrain.getPose().heading());
          telemetry.addData("Pose", drivetrain.getPose());
         telemetry.update();
+    }
+    @Override
+    public void end() {
+        blackboard.put("pose", drivetrain.getPose());
+
     }
 }
