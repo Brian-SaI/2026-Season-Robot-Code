@@ -3,14 +3,15 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import android.util.Size;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.Command;
-import com.seattlesolvers.solverslib.command.Subsystem;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Alliance;
@@ -19,11 +20,9 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.firstinspires.ftc.vision.apriltag.AprilTagSingleDetection;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class VisionSubsystem extends SubsystemBase {
 
@@ -31,16 +30,21 @@ public class VisionSubsystem extends SubsystemBase {
     private VisionPortal visionPortal;
     private Telemetry telemetry;
     private AprilTagClusterDetection target;
-
+    public static int GAIN = 0;
+    public static int EXPOSURE = 35;
     private Alliance alliance;
 
+    private LinearOpMode opMode;
     private int activeUsers = 0;
 
-    public VisionSubsystem(HardwareMap m, Telemetry telemetry, Alliance alliance){
+    public VisionSubsystem(HardwareMap m, Telemetry telemetry, Alliance alliance, LinearOpMode opMode){
         this.telemetry=telemetry;
-        initAprilTag(m);
-        enableProcessing();
         this.alliance = alliance;
+        this.opMode = opMode;
+        initAprilTag(m);
+        setManualExposure(EXPOSURE, GAIN);
+        enableProcessing();
+
 
     }
     public Double getDistanceToTarget(){
@@ -192,5 +196,51 @@ public class VisionSubsystem extends SubsystemBase {
 
 
     }   // end method initAprilTag()
+    private boolean setManualExposure(int exposureMS, int gain) {
+        // Ensure Vision Portal has been setup.
+        if (visionPortal == null) {
+            return false;
+        }
+
+        // Wait for the camera to be open
+        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+            telemetry.addData("Camera", "Waiting");
+            telemetry.update();
+            while (!opMode.isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
+                sleep(20);
+            }
+            telemetry.addData("Camera", "Ready");
+            telemetry.update();
+        }
+
+        // Set camera controls unless we are stopping.
+        if (!opMode.isStopRequested())
+        {
+            // Set exposure.  Make sure we are in Manual Mode for these values to take effect.
+            ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
+            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
+                exposureControl.setMode(ExposureControl.Mode.Manual);
+                sleep(50);
+            }
+            exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
+            sleep(20);
+
+            // Set Gain.
+            GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
+            gainControl.setGain(gain);
+            sleep(20);
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
+    public final void sleep(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 
 }

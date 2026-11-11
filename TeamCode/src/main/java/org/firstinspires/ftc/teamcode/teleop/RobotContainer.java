@@ -89,7 +89,7 @@ public class RobotContainer extends CommandOpMode {
         follower = Constants.create(hardwareMap);
         intakeSubsystem = new IntakeSubsystem(hardwareMap);
         indexerSubsystem = new IndexerSubsystem(hardwareMap);
-        visionSubsystem = new VisionSubsystem(hardwareMap, telemetry, alliance);
+        visionSubsystem = new VisionSubsystem(hardwareMap, telemetry, alliance, this);
         shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, visionSubsystem);
         drivetrain = new MecanumDrivetrain(follower);
         blinky = new GobildaIndicatorLight(hardwareMap, "beacon");
