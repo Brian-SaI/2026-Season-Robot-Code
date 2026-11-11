@@ -51,6 +51,7 @@ public class UpShootGardenDownShoot extends AutoBase {
                                     follow(path1(), 1.0),
                                     pause(1000))),
                     follow(path2()),
+                    stopCommand(),
                     shoot(),
                     follow(path3()),
                     stopCommand()

@@ -22,10 +22,14 @@ public class DownSideWaitShootAndPark extends AutoBase{
     protected void scheduleAuto() {
         drivetrain.setPose(start);
             schedule(
+                sequential(
+                    pause(16000),
                     startFlywheel(),
-                    pause(20000),
+                    pause(4000),
                     shoot(),
-                    follow(path1())
+                    follow(path1()),
+                    stopCommand()
+                )
             );
 
     }

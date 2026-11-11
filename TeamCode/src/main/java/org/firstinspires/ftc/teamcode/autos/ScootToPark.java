@@ -23,7 +23,9 @@ public class ScootToPark extends AutoBase {
     protected void scheduleAuto() {
         drivetrain.setPose(start);
         schedule(
-                follow(path1())
+                sequential(
+                    follow(path1())
+                )
         );
     }
 }
