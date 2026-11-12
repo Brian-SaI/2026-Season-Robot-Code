@@ -36,6 +36,8 @@ public class VisionSubsystem extends SubsystemBase {
 
     private LinearOpMode opMode;
     private int activeUsers = 0;
+    private boolean streamingEnabled = true;
+    public static boolean STREAMING_ENABLED = true;
 
     public VisionSubsystem(HardwareMap m, Telemetry telemetry, Alliance alliance, LinearOpMode opMode){
         this.telemetry=telemetry;
@@ -129,7 +131,21 @@ public class VisionSubsystem extends SubsystemBase {
     public Command defaultCommand() {
         return run(() -> {});
     }
+    private void checkStreaming() {
+        if (streamingEnabled != STREAMING_ENABLED) {
+            streamingEnabled = STREAMING_ENABLED;
+            if (streamingEnabled) {
+                visionPortal.resumeStreaming();
+                visionPortal.resumeLiveView();
+                FtcDashboard.getInstance().startCameraStream(visionPortal, 0);
+            } else {
+                FtcDashboard.getInstance().stopCameraStream();
+                visionPortal.stopStreaming();
+                visionPortal.stopLiveView();
 
+            }
+        }
+    }
     private void initAprilTag(HardwareMap m) {
 
         // Create the AprilTag processor.

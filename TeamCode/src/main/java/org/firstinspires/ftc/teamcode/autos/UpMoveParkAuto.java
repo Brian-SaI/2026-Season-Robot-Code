@@ -22,7 +22,9 @@ public class UpMoveParkAuto extends AutoBase{
     protected void scheduleAuto(){
     drivetrain.setPose(start);
         schedule(
+                sequential(
                 follow(path1())
+                )
         );
     }
 }

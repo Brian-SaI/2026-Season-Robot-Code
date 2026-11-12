@@ -48,7 +48,7 @@ public class MecanumDrivetrain extends SubsystemBase {
     // Return True if still running, false if done
     public boolean followCurrentPath(double tolerance) {
         follower.update();
-        return !follower.atParametricEnd() || follower.distanceToEndpoint() < tolerance;
+        return !follower.atParametricEnd() && follower.distanceToEndpoint() >= tolerance;
     }
 
     // Return True if still running, false if done
