@@ -72,6 +72,12 @@ public class RobotContainer extends CommandOpMode {
     // Controllers
     private GamepadEx driverController;
     private GamepadEx manipulatorController;
+    private long loopStartTime = 0;
+    private long startTime = 0;
+    private boolean isOneMinute = false;
+    private boolean isTwentySeconds = false;
+
+
 
     protected RobotContainer(Alliance alliance) {
         this.alliance = alliance;
@@ -157,6 +163,7 @@ public class RobotContainer extends CommandOpMode {
 
     @Override
     public void run() {
+        logLoopTime();
         super.run(); // runs the CommandScheduler
          Double bearing = visionSubsystem.getTargetBearing();
          if (bearing == null) {
@@ -178,4 +185,25 @@ public class RobotContainer extends CommandOpMode {
         blackboard.put("pose", drivetrain.getPose());
 
     }
+    @Override
+    public void preRun() {
+        startTime = System.currentTimeMillis();
+    }
+    private void logLoopTime() {
+        long now = System.currentTimeMillis();
+        if(loopStartTime > 0) {
+            telemetry.addData("loop", now - loopStartTime);
+        }
+        loopStartTime = now;
+        if (now - startTime > 60_000 && ! isOneMinute) {
+            isOneMinute = true;
+            gamepad1.rumbleBlips(5);
+            gamepad2.rumbleBlips(5);
+        } else if (now - startTime > 100_000 && ! isTwentySeconds) {
+            isTwentySeconds = true;
+            gamepad1.rumble(2000);
+            gamepad2.rumble(2000);
+        }
+    }
+
 }
