@@ -18,14 +18,14 @@ public class ShooterSubsystem extends SubsystemBase {
     public static class ShooterParams {
         public static double VELOCITY_THRESHOLD = 100.0;
 
-        public static double CLOSE_DISTANCE_P = 53.0;
+        public static double CLOSE_DISTANCE_P = 53;
         public static double CLOSE_RPM_P = 3100.0;
         public static double FAR_DISTANCE_P = 69.0;
-        public static double FAR_RPM_P = 3300.0;
-        public static double CLOSE_DISTANCE_N = 57.0;
-        public static double CLOSE_RPM_N = 3100.0;
-        public static double FAR_DISTANCE_N = 69.0;
-        public static double FAR_RPM_N = 3300.0;
+        public static double FAR_RPM_P = 3260;
+        public static double CLOSE_DISTANCE_N = 56.5;
+        public static double CLOSE_RPM_N = 3150;
+        public static double FAR_DISTANCE_N = 72;
+        public static double FAR_RPM_N = 3275;
 
 
         public static double SHOOTER_P=120.0;
@@ -33,8 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
         public static double SHOOTER_F=12.6189;
         public static boolean RESET_PID = false;
 
-        public static double DEFAULT_RPM_P = 3200;
-        public static double DEFALUT_RPM_N = 3275;
+        public static double DEFAULT_RPM_P = 3170;
+        public static double DEFALUT_RPM_N = 3240;
         public static double pTargetRPM = 0.0;
         public static double nTargetRPM = 0.0;
         public static boolean autoRPM = false;
