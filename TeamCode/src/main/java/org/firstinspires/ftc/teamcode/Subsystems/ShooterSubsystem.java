@@ -48,10 +48,10 @@ public class ShooterSubsystem extends SubsystemBase {
         public static double RIGHT_GATE_CLOSED = 0.26;
     }
 
-    static final double P_GEAR_RATIO = 20.0 / 21.0;
+    static final double P_GEAR_RATIO = 24.0 / 37.0;
     private static final double P_TICKS_PER_REVOLUTION = 28;
 
-    static final double N_GEAR_RATIO = 20.0 / 22.0;
+    static final double N_GEAR_RATIO = 28.0 / 44.0;
     private static final double N_TICKS_PER_REVOLUTION = 28;
 
     private final DcMotorEx pShooter;
