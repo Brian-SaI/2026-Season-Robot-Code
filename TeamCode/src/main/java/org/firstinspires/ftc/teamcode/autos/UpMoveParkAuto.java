@@ -5,8 +5,10 @@ import com.pedropathing.api.PoseFactory;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "Up Move Park", group = "Comp")
+@Disabled
 public class UpMoveParkAuto extends AutoBase{
 
     private final PoseFactory poseFactory = PoseFactory.degrees();

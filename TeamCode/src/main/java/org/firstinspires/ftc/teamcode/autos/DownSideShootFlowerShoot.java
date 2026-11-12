@@ -5,8 +5,10 @@ import com.pedropathing.api.PoseFactory;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "Down Side Shoot Flower Shoot", group = "Comp")
+@Disabled
 public class DownSideShootFlowerShoot extends AutoBase {
 
             private final PoseFactory poseFactory = PoseFactory.degrees();

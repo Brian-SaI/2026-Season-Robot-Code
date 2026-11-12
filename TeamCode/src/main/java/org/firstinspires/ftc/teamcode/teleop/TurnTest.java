@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrivetrain;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 @Config
 @Autonomous(name = "Turn Test", group = "Tuning")
+@Disabled
 public class TurnTest extends OpMode {
 
     public static double TURN_POWER = 0.0;
