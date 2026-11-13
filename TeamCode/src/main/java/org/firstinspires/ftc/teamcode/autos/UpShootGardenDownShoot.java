@@ -19,10 +19,10 @@ public class UpShootGardenDownShoot extends AutoBase {
     private final Pose point1Segment1End = poseFactory.of(9.0733, 8, 180);
     private final Pose point1Segment2Heading = poseFactory.of(9.0733, 8, 180);
     private final Pose point2Start = poseFactory.of(9.0733, 8, 180);
-    private final Pose point2 = poseFactory.of(30.3239, 127, 130);
+    private final Pose point2 = poseFactory.of(30.3239, 127, 125);
     private final Pose point2Control1 = poseFactory.of(28.622, 27.012, 0);
     private final Pose point2Control2 = poseFactory.of(15.2054, 91.4115, 0);
-    private final Pose point3Start = poseFactory.of(30.3239, 127, 130);
+    private final Pose point3Start = poseFactory.of(30.3239, 127, 125);
     private final Pose point3 = poseFactory.of(13.0489, 93.8193, 90);
     private final Pose point3Control1 = poseFactory.of(37.5952, 100.8077, 0);
 
