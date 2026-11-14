@@ -33,7 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
         public static double SHOOTER_F=12.6189;
         public static boolean RESET_PID = false;
 
-        public static double DEFAULT_RPM_P = 3170;
+        public static double DEFAULT_RPM_P = 3190;
         public static double DEFALUT_RPM_N = 3240;
         public static double pTargetRPM = 0.0;
         public static double nTargetRPM = 0.0;
