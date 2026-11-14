@@ -12,7 +12,7 @@ public class ScootToParkLeft extends AutoBase {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private final Pose start = poseFactory.of(8.2612, 136, 90);
-    private final Pose point1 = poseFactory.of(8.8114, 122, 90);
+    private final Pose point1 = poseFactory.of(13.0, 122, 90);
 
     public Path path1() {
         return Paths.line(start, point1).constant(point1);

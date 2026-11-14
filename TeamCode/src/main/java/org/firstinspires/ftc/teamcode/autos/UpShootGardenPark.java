@@ -18,7 +18,7 @@ public class UpShootGardenPark extends AutoBase {
     private final Pose point1Segment1Start = poseFactory.of(9.0733, 8, -90);
     private final Pose point1Segment1End = poseFactory.of(9.0733, 8, 180);
     private final Pose point1Segment2Heading = poseFactory.of(9.0733, 8, 180);
-    private final Pose point2 = poseFactory.of(10.154, 91.7176, 180);
+    private final Pose point2 = poseFactory.of(13.154, 91.7176, 180);
     private final Pose point2Control1 = poseFactory.of(30.9869, 34.6937, 0);
 
     public Path path1() {
