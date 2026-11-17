@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
@@ -28,6 +29,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 
+@Config
 public class RobotContainer extends CommandOpMode {
 
     @TeleOp(name = "[BLUE] BioBuzz Teleop", group = "Comp")
@@ -44,6 +46,9 @@ public class RobotContainer extends CommandOpMode {
         }
     }
 
+    public static double DRIVE_SPEED = 0.9;
+    public static double DRIVE_SPEED_FAST = 1.0;
+    public static double DRIVE_SPEED_SLOW = 0.5;
 
     private Alliance alliance;
     // Subsystems
@@ -151,14 +156,14 @@ public class RobotContainer extends CommandOpMode {
     }
     private double driveSpeed(){
         if (driverController.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) >=0.5){
-            return 0.35;
+            return DRIVE_SPEED_SLOW;
         }
 
         if (driverController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) >= 0.5){
-            return 0.9;
+            return DRIVE_SPEED_FAST;
 
         }
-        return 0.75;
+        return DRIVE_SPEED;
     }
 
     @Override
