@@ -22,10 +22,10 @@ public class ScootToParkRight extends AutoBase {
     @Override
     protected void scheduleAuto() {
         drivetrain.setPose(start);
-        schedule(
-                sequential(
-                    follow(path1())
-                )
-        );
+        states.put("State1", new AutoState(
+                follow(path1()),
+                () -> END_STATE
+        ));
+        currentState = "State1";
     }
 }

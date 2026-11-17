@@ -8,6 +8,7 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.ParallelRaceGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 
@@ -24,10 +25,15 @@ import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public abstract class AutoBase extends CommandOpMode {
+
+    protected static final String END_STATE = "END_STATE";
+    protected AutoState endState;
 
     protected MecanumDrivetrain drivetrain;
     protected IntakeSubsystem intake;
@@ -47,6 +53,7 @@ public abstract class AutoBase extends CommandOpMode {
     }
 
     Map<String, AutoState> states;
+    String currentState;
 
     @Override
     public void initialize() {
@@ -57,15 +64,26 @@ public abstract class AutoBase extends CommandOpMode {
         indexer = new IndexerSubsystem(hardwareMap);
         vision = new VisionSubsystem(hardwareMap, telemetry, Alliance.RED, this);
         shooter = new ShooterSubsystem(hardwareMap,telemetry, vision);
+        states = new HashMap<>();
+        states.put(END_STATE, new AutoState(
+                drivetrain.stopCommand(),
+                () -> END_STATE));
     }
 
     @Override
     public void preRun() {
         scheduleAuto();
+        schedule(
+                Objects.requireNonNull(states.get(currentState)).behavior
+        );
     }
 
     @Override
     public void run() {
+        if (!CommandScheduler.getInstance().isScheduled(states.get(currentState).behavior)) {
+            currentState = states.get(currentState).nextState.get();
+            schedule(states.get(currentState).behavior);
+        }
         super.run();
         drawRobot(drivetrain.getPose());
         telemetry.addData("Pose", drivetrain.getPose());
