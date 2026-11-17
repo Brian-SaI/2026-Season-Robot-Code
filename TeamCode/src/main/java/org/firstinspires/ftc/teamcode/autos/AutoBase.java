@@ -24,6 +24,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
+import java.util.Map;
+import java.util.function.Supplier;
+
 public abstract class AutoBase extends CommandOpMode {
 
     protected MecanumDrivetrain drivetrain;
@@ -33,6 +36,18 @@ public abstract class AutoBase extends CommandOpMode {
     protected ShooterSubsystem shooter;
 
     protected VisionSubsystem vision;
+
+    public static class AutoState {
+        public Command behavior;
+        public Supplier<String> nextState;
+        public AutoState(Command behavior, Supplier<String> nextState) {
+            this.behavior = behavior;
+            this.nextState = nextState;
+        }
+    }
+
+    Map<String, AutoState> states;
+
     @Override
     public void initialize() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
