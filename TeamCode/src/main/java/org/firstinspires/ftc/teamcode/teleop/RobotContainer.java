@@ -99,7 +99,7 @@ public class RobotContainer extends CommandOpMode {
         // Subsystems
         follower = Constants.create(hardwareMap);
         intakeSubsystem = new IntakeSubsystem(hardwareMap);
-        indexerSubsystem = new IndexerSubsystem(hardwareMap);
+        indexerSubsystem = new IndexerSubsystem(hardwareMap, telemetry);
         visionSubsystem = new VisionSubsystem(hardwareMap, telemetry, alliance, this);
         shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, visionSubsystem);
         drivetrain = new MecanumDrivetrain(follower);

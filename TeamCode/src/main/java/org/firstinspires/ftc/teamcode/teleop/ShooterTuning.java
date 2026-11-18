@@ -32,7 +32,7 @@ public class ShooterTuning extends CommandOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         intakeSubsystem = new IntakeSubsystem(hardwareMap);
-        indexerSubsystem = new IndexerSubsystem(hardwareMap);
+        indexerSubsystem = new IndexerSubsystem(hardwareMap, telemetry);
         shooterSubsystem = new ShooterSubsystem(hardwareMap, telemetry, null);
         shooterSubsystem.setDefaultCommand(shooterSubsystem.defaultCommand());
 

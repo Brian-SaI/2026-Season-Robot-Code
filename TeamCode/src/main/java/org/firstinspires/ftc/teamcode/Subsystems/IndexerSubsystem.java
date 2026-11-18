@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @Config
 public class IndexerSubsystem extends SubsystemBase {
     private final DcMotorEx indexer;
@@ -18,10 +20,19 @@ public class IndexerSubsystem extends SubsystemBase {
     private boolean isSlowRequested = false;
     private boolean isFastRequested = false;
 
-    public IndexerSubsystem(final HardwareMap hardwareMap) {
+    private final Telemetry telemetry;
+
+    public IndexerSubsystem(final HardwareMap hardwareMap, Telemetry telemetry) {
         indexer = hardwareMap.get(DcMotorEx.class,"Indexer");
         indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         indexer.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.telemetry = telemetry;
+        register();
+    }
+
+    @Override
+    public void periodic() {
+        telemetry.addData("Indexer Velocity", indexer.getVelocity());
     }
 
     public void runIndexer() {

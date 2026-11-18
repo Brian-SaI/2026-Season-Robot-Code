@@ -61,7 +61,7 @@ public abstract class AutoBase extends CommandOpMode {
         drivetrain = new MecanumDrivetrain(Constants.create(hardwareMap));
         drivetrain.calibratePinpoint();
         intake = new IntakeSubsystem(hardwareMap);
-        indexer = new IndexerSubsystem(hardwareMap);
+        indexer = new IndexerSubsystem(hardwareMap, telemetry);
         vision = new VisionSubsystem(hardwareMap, telemetry, Alliance.RED, this);
         shooter = new ShooterSubsystem(hardwareMap,telemetry, vision);
         states = new HashMap<>();
