@@ -43,13 +43,16 @@ public class DownSideShootFlowerShoot extends AutoBase {
             @Override
             protected void scheduleAuto() {
                 drivetrain.setPose(start);
-                schedule(
-                follow(path1()),
-                follow(path2()),
-                follow(path3()),
-                follow(path4()),
-                follow(path5())
-
-                    );
+                states.put("State1", new AutoState(
+                        sequential(
+                                follow(path1()),
+                                follow(path2()),
+                                follow(path3()),
+                                follow(path4()),
+                                follow(path5())
+                        ),
+                        () -> END_STATE
+                ));
+                currentState = "State1";
     }
 }

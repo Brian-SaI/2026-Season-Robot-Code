@@ -22,14 +22,16 @@ public class CompAutoFinals extends AutoBase {
     @Override
     protected void scheduleAuto() {
         drivetrain.setPose(start);
-        schedule(
+        states.put("State1", new AutoState(
                 sequential(
                         startFlywheel(),
                         pause(6000),
                         shoot(),
                         follow(path1()),
                         stopCommand()
-                )
-        );
+                ),
+                () -> END_STATE
+        ));
+        currentState = "State1";
     }
 }

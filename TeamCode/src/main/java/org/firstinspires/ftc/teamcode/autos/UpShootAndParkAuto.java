@@ -21,14 +21,16 @@ public class UpShootAndParkAuto extends AutoBase{
     @Override
     protected void scheduleAuto() {
         drivetrain.setPose(start);
-        schedule(
+        states.put("State1", new AutoState(
                 sequential(
                         startFlywheel(),
                         pause(3000),
                         shoot(),
                         follow(path1()),
                         stopCommand()
-                )
-        );
+                ),
+                () -> END_STATE
+        ));
+        currentState = "State1";
     }
 }

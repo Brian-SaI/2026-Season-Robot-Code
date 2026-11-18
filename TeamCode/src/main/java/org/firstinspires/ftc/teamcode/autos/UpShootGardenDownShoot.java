@@ -40,22 +40,24 @@ public class UpShootGardenDownShoot extends AutoBase {
     @Override
     protected void scheduleAuto() {
         drivetrain.setPose(start);
-        schedule(
+        states.put("State1", new AutoState(
                 sequential(
-                    startFlywheel(),
-                    pause(3000),
-                    shoot(),
-                    parallelRace(
-                            intake(),
-                            sequential(
-                                    follow(path1(), 1.0),
-                                    pause(1000))),
-                    follow(path2()),
-                    stopCommand(),
-                    shoot(),
-                    follow(path3()),
-                    stopCommand()
-                )
-        );
+                        startFlywheel(),
+                        pause(3000),
+                        shoot(),
+                        parallelRace(
+                                intake(),
+                                sequential(
+                                        follow(path1(), 1.0),
+                                        pause(1000))),
+                        follow(path2()),
+                        stopCommand(),
+                        shoot(),
+                        follow(path3()),
+                        stopCommand()
+                ),
+                () -> END_STATE
+        ));
+        currentState = "State1";
     }
 }

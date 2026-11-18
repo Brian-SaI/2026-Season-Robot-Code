@@ -22,11 +22,11 @@ public class UpMoveParkAuto extends AutoBase{
 
     @Override
     protected void scheduleAuto(){
-    drivetrain.setPose(start);
-        schedule(
-                sequential(
-                follow(path1())
-                )
-        );
+        drivetrain.setPose(start);
+        states.put("State1", new AutoState(
+                follow(path1()),
+                () -> END_STATE
+        ));
+        currentState = "State1";
     }
 }
