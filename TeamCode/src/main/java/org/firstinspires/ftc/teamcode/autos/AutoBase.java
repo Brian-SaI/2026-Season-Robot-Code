@@ -152,4 +152,8 @@ public abstract class AutoBase extends CommandOpMode {
         return new ParallelRaceGroup(commands);
     }
 
+    protected Supplier<String> visionStateChange(String stateWithTarget, String stateWithoutTarget) {
+        return () -> vision.isTargetVisible() ?stateWithTarget  :stateWithoutTarget;
+    }
+
 }
