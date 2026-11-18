@@ -7,7 +7,7 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.interpolator.Interpolator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous (name= " Vision Up Shoot Garden Shoot", group= "Comp" )
+@Autonomous (name= "Vision Up Shoot Garden Shoot", group= "Comp" )
 public class VisionUpShootGardenShootAuto extends AutoBase {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
