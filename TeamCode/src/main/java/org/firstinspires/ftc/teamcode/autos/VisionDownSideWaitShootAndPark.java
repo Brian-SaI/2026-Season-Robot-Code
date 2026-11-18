@@ -44,13 +44,7 @@ public class VisionDownSideWaitShootAndPark extends AutoBase{
 
 
 
-        startFlywheel(),
-                pause(4000),
-                shoot(),
-                follow(path1()),
-                stopCommand()
-                ),
-        () -> END_STATE
+        
     }
 
 }
