@@ -6,7 +6,7 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Scoot To Park - Right Side", group = "Comp")
+@Autonomous(name = "Vision Test Auto", group = "Comp")
 public class visionTestAuto extends AutoBase {
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
