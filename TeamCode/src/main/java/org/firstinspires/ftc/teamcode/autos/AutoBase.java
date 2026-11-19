@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
 import org.firstinspires.ftc.teamcode.Commands.StartFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.Commands.TimerCommand;
+import org.firstinspires.ftc.teamcode.Commands.WaitForTargetCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.FlowerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
@@ -147,6 +148,10 @@ public abstract class AutoBase extends CommandOpMode {
 
     protected Command pause(long timeInMs){
             return new TimerCommand(timeInMs);
+    }
+
+    protected Command waitForTarget(){
+        return new WaitForTargetCommand(vision);
     }
     protected Command intake(){
         return  new IntakeCommand(intake, indexer);

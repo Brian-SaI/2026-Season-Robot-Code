@@ -11,9 +11,6 @@ public class FlowerSubsystem extends SubsystemBase {
         leftFlower = hMap.get(Servo.class, "LeftFlower");
         rightFlower = hMap.get(Servo.class, "RightFlower");
         up();
-        down();
-
-
     }
     public void up() {
         leftFlower.setPosition(1.0);

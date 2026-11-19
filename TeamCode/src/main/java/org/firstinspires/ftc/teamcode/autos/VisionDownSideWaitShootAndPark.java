@@ -22,13 +22,17 @@ public class VisionDownSideWaitShootAndPark extends AutoBase{
     protected void scheduleAuto() {
         drivetrain.setPose(start);
         states.put("State1", new AutoState(
-                pause(20_000),
+                parallelRace(
+                    pause(20_000),
+                    waitForTarget()
+                ),
                 visionStateChange("shoot", "park")
         ));
         currentState = "State1";
         states.put("shoot",new AutoState(
                 sequential(
                         startFlywheel(),
+                        pause(1000),
                         shoot()
                 ),
                 () -> "park"

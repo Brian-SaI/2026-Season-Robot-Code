@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "Down Side Shoot Flower Shoot", group = "Comp")
-@Disabled
+//@Disabled
 public class DownSideShootFlowerShoot extends AutoBase {
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
@@ -16,7 +16,7 @@ public class DownSideShootFlowerShoot extends AutoBase {
     private final Pose start = poseFactory.of(60.0256, 133.3588, 90);
     private final Pose path1 = poseFactory.of(48, 120, 90);
     private final Pose path1Control1 = poseFactory.of(60.3006, 113.2799, 0);
-    private final Pose point2 = poseFactory.of(48, 132, 90);
+    private final Pose point2 = poseFactory.of(48, 127.5, 90);
     private final Pose point3 = poseFactory.of(48, 120, 90);
     private final Pose path1_2 = poseFactory.of(60, 133, 90);
     private final Pose path1_2Control1 = poseFactory.of(60.3006, 113.2799, 0);
@@ -48,14 +48,18 @@ public class DownSideShootFlowerShoot extends AutoBase {
         drivetrain.setPose(start);
         states.put("State1", new AutoState(
                 sequential(
+                        parallelRace(
+                                pause(15_000),
+                                waitForTarget()
+                        ),
                         startFlywheel(),
-                        pause(2000),
+                        pause(1000),
                         shoot(),
                         follow(path1()),
                         flowerDown(),
                         parallelRace(
                                 sequential(
-                                    follow(path2()),
+                                    follow(path2(),1.0),
                                         pause(2000)
                                 ),
                                 intake()),
