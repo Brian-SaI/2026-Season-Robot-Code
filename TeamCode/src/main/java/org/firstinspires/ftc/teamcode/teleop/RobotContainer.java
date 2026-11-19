@@ -14,6 +14,7 @@ import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 import org.firstinspires.ftc.teamcode.Alliance;
 import org.firstinspires.ftc.teamcode.Commands.AutoFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.Commands.CommandDrivetrain;
+import org.firstinspires.ftc.teamcode.Commands.FlowerUpCommand;
 import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
 import org.firstinspires.ftc.teamcode.Commands.OuttakeCommand;
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.teamcode.Commands.PointToAprilTagCommand;
 import org.firstinspires.ftc.teamcode.Commands.StartFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.Commands.IdleFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.GobildaIndicatorLight;
+import org.firstinspires.ftc.teamcode.Subsystems.FlowerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrivetrain;
@@ -58,6 +60,7 @@ public class RobotContainer extends CommandOpMode {
     private MecanumDrivetrain drivetrain;
     private IntakeSubsystem intakeSubsystem;
     private ShooterSubsystem shooterSubsystem;
+    private FlowerSubsystem flowerSubsystem;
 
     // Commands
     private CommandDrivetrain driveCommand;
@@ -70,9 +73,11 @@ public class RobotContainer extends CommandOpMode {
     private AutoFlyWheelCommand autoFlyWheelCommand;
     private IdleFlyWheelCommand idleFlyWheelCommand;
     private PointToAprilTagCommand pointToAprilTagCommand;
+    private FlowerUpCommand flowerCommand;
     private VisionSubsystem visionSubsystem;
     private GobildaIndicatorLight blinky;
     private GobildaIndicatorLight blinky2;
+
 
     // Controllers
     private GamepadEx driverController;
@@ -105,6 +110,7 @@ public class RobotContainer extends CommandOpMode {
         drivetrain = new MecanumDrivetrain(follower);
         blinky = new GobildaIndicatorLight(hardwareMap, "beacon");
         blinky2 = new GobildaIndicatorLight(hardwareMap, "beacon2");
+        flowerSubsystem = new FlowerSubsystem(hardwareMap);
 
 
         // Commands
@@ -132,11 +138,13 @@ public class RobotContainer extends CommandOpMode {
         autoFlyWheelCommand = new AutoFlyWheelCommand(shooterSubsystem);
         idleFlyWheelCommand = new IdleFlyWheelCommand(shooterSubsystem);
         shootCommand = new ShootCommand(shooterSubsystem, indexerSubsystem);
+        flowerCommand = new FlowerUpCommand(flowerSubsystem);
 
         // Intake Commands
         manipulatorController.getGamepadButton(GamepadKeys.Button.SQUARE).whenHeld(intakeCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenHeld(shootCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenHeld(outtakeCommand);
+        manipulatorController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenHeld(flowerCommand);
         new Trigger(() -> manipulatorController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
                 .whenActive(startFlyWheelCommand)
                 .whenInactive(idleFlyWheelCommand);

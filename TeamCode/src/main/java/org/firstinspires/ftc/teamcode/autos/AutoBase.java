@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
 import org.firstinspires.ftc.teamcode.Commands.StartFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.Commands.TimerCommand;
+import org.firstinspires.ftc.teamcode.Subsystems.FlowerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IndexerSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrivetrain;
@@ -40,6 +41,7 @@ public abstract class AutoBase extends CommandOpMode {
 
     protected IndexerSubsystem indexer;
     protected ShooterSubsystem shooter;
+    protected FlowerSubsystem flower;
 
     protected VisionSubsystem vision;
 
@@ -64,6 +66,7 @@ public abstract class AutoBase extends CommandOpMode {
         indexer = new IndexerSubsystem(hardwareMap, telemetry);
         vision = new VisionSubsystem(hardwareMap, telemetry, Alliance.RED, this);
         shooter = new ShooterSubsystem(hardwareMap,telemetry, vision);
+        flower = new FlowerSubsystem(hardwareMap);
         states = new HashMap<>();
         states.put(END_STATE, new AutoState(
                 drivetrain.stopCommand(),
