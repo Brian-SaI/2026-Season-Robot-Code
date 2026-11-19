@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
 import org.firstinspires.ftc.teamcode.Commands.StartFlyWheelCommand;
+import org.firstinspires.ftc.teamcode.Commands.StopFlyWheelCommand;
 import org.firstinspires.ftc.teamcode.Commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.Commands.WaitForTargetCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.FlowerSubsystem;
@@ -73,7 +74,10 @@ public abstract class AutoBase extends CommandOpMode {
         flower = new FlowerSubsystem(hardwareMap);
         states = new HashMap<>();
         states.put(END_STATE, new AutoState(
-                drivetrain.stopCommand(),
+                sequential(
+                    stopFlywheel(),
+                        drivetrain.stopCommand()
+                ),
                 () -> END_STATE));
     }
 
@@ -139,6 +143,9 @@ public abstract class AutoBase extends CommandOpMode {
     }
 
     protected Command startFlywheel(){return new StartFlyWheelCommand(shooter);}
+
+
+    protected Command stopFlywheel(){return new StopFlyWheelCommand(shooter);}
 
     protected Command shoot(){
         return  parallelRace(

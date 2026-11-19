@@ -6,7 +6,7 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Down Side Wait Shoot And Park", group = "Comp")
+@Autonomous(name = "Vision Down Side Wait Shoot And Park", group = "Comp")
 public class VisionDownSideWaitShootAndPark extends AutoBase{
         private final PoseFactory poseFactory = PoseFactory.degrees();
 
