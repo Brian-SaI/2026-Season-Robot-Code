@@ -30,8 +30,8 @@ public class VisionSubsystem extends SubsystemBase {
     private VisionPortal visionPortal;
     private Telemetry telemetry;
     private AprilTagClusterDetection target;
-    public static int GAIN = 19;
-    public static int EXPOSURE = 22;
+    public static int GAIN = 0;//19;
+    public static int EXPOSURE = 35;//22;
     private Alliance alliance;
 
     private LinearOpMode opMode;
