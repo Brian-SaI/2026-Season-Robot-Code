@@ -11,48 +11,51 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 @Disabled
 public class DownSideShootFlowerShoot extends AutoBase {
 
-            private final PoseFactory poseFactory = PoseFactory.degrees();
+    private final PoseFactory poseFactory = PoseFactory.degrees();
 
-            private final Pose start = poseFactory.of(59.7873, 133.2145, 90);
-            private final Pose path1 = poseFactory.of(59.8572, 105.4304, 90);
-            private final Pose point2 = poseFactory.of(47.4656, 135.5882, 112.3375);
-            private final Pose point3 = poseFactory.of(59.3228, 116.1822, 121.4253);
-            private final Pose point4 = poseFactory.of(59.7059, 105.693, 92.0915);
-            private final Pose point5 = poseFactory.of(7.1714, 115.4154, -10.4849);
+    private final Pose start = poseFactory.of(60.0256, 133.3588, 90);
+    private final Pose path1 = poseFactory.of(48, 120, 90);
+    private final Pose path1Control1 = poseFactory.of(60.3006, 113.2799, 0);
+    private final Pose point2 = poseFactory.of(48, 132, 90);
+    private final Pose point3 = poseFactory.of(48, 120, 90);
+    private final Pose path1_2 = poseFactory.of(60, 133, 90);
+    private final Pose path1_2Control1 = poseFactory.of(60.3006, 113.2799, 0);
+    private final Pose point5 = poseFactory.of(13.769, 121.7228, -0.999);
+    private final Pose point5Control1 = poseFactory.of(62.8297, 120.8674, 0);
 
-            public Path path1() {
-                return Paths.line(start, path1).linear(start, path1);
-            }
+    public Path path1() {
+        return Paths.curve(start, path1Control1, path1).constant(path1);
+    }
 
-            public Path path2() {
-                return Paths.line(path1, point2).tangent();
-            }
+    public Path path2() {
+        return Paths.line(path1, point2).constant(point2);
+    }
 
-            public Path path3() {
-                return Paths.line(point2, point3).reverseTangent();
-            }
+    public Path path3() {
+        return Paths.line(point2, point3).reverseTangent();
+    }
 
-            public Path path4() {
-                return Paths.line(point3, point4).reverseTangent();
-            }
+    public Path path1_2() {
+        return Paths.curve(point3, path1_2Control1, path1_2).constant(path1_2);
+    }
 
-            public Path path5() {
-                return Paths.line(point4, point5).reverseTangent();
-            }
+    public Path path5() {
+        return Paths.curve(path1_2, point5Control1, point5).reverseTangent();
+    }
 
-            @Override
-            protected void scheduleAuto() {
-                drivetrain.setPose(start);
-                states.put("State1", new AutoState(
-                        sequential(
-                                follow(path1()),
-                                follow(path2()),
-                                follow(path3()),
-                                follow(path4()),
-                                follow(path5())
-                        ),
-                        () -> END_STATE
-                ));
-                currentState = "State1";
+    @Override
+    protected void scheduleAuto() {
+        drivetrain.setPose(start);
+        states.put("State1", new AutoState(
+                sequential(
+                        follow(path1()),
+                        follow(path2()),
+                        follow(path3()),
+                        follow(path1_2()),
+                        follow(path5())
+                ),
+                () -> END_STATE
+        ));
+        currentState = "State1";
     }
 }
