@@ -20,7 +20,7 @@ public class DownSideShootFlowerShoot extends AutoBase {
     private final Pose point3 = poseFactory.of(48, 120, 90);
     private final Pose path1_2 = poseFactory.of(60, 133, 90);
     private final Pose path1_2Control1 = poseFactory.of(60.3006, 113.2799, 0);
-    private final Pose point5 = poseFactory.of(13.769, 121.7228, -0.999);
+    private final Pose point5 = poseFactory.of(13.769, 121.7228, 90);
     private final Pose point5Control1 = poseFactory.of(62.8297, 120.8674, 0);
 
     public Path path1() {
@@ -40,7 +40,7 @@ public class DownSideShootFlowerShoot extends AutoBase {
     }
 
     public Path path5() {
-        return Paths.curve(path1_2, point5Control1, point5).reverseTangent();
+        return Paths.curve(path1_2, point5Control1, point5).constant(point5);
     }
 
     @Override
@@ -48,14 +48,27 @@ public class DownSideShootFlowerShoot extends AutoBase {
         drivetrain.setPose(start);
         states.put("State1", new AutoState(
                 sequential(
+                        startFlywheel(),
+                        pause(2000),
+                        shoot(),
                         follow(path1()),
-                        follow(path2()),
+                        flowerDown(),
+                        parallelRace(
+                                sequential(
+                                    follow(path2()),
+                                        pause(2000)
+                                ),
+                                intake()),
                         follow(path3()),
+                        flowerUp(),
                         follow(path1_2()),
-                        follow(path5())
+                        shoot(),
+                        follow(path5()),
+                        stopCommand()
                 ),
                 () -> END_STATE
         ));
         currentState = "State1";
+
     }
 }

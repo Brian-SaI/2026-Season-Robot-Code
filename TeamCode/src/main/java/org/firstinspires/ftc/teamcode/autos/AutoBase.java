@@ -9,10 +9,13 @@ import com.pedropathing.paths.Path;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
+import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.ParallelRaceGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 
 import org.firstinspires.ftc.teamcode.Alliance;
+import org.firstinspires.ftc.teamcode.Commands.FlowerDownCommand;
+import org.firstinspires.ftc.teamcode.Commands.FlowerUpCommand;
 import org.firstinspires.ftc.teamcode.Commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.Commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.ShootCommand;
@@ -145,14 +148,32 @@ public abstract class AutoBase extends CommandOpMode {
     protected Command pause(long timeInMs){
             return new TimerCommand(timeInMs);
     }
-    protected Command intake(){return  new IntakeCommand(intake, indexer);
+    protected Command intake(){
+        return  new IntakeCommand(intake, indexer);
+    }
+    protected  Command flowerUp(){
+        return parallel(
+               new  FlowerUpCommand(flower),
+                new TimerCommand(1000)
+        );
+
+    }
+    protected  Command flowerDown(){
+        return parallel(
+                new FlowerDownCommand(flower),
+                new TimerCommand(1000)
+        );
     }
     protected Command sequential(Command ...commands) {
         return new SequentialCommandGroup(commands);
     }
 
-    protected Command parallelRace  (Command ...commands) {
+    protected Command parallelRace(Command ...commands) {
         return new ParallelRaceGroup(commands);
+    }
+
+    protected Command parallel(Command ...commands) {
+        return new ParallelCommandGroup(commands);
     }
 
     protected Supplier<String> visionStateChange(String stateWithTarget, String stateWithoutTarget) {
