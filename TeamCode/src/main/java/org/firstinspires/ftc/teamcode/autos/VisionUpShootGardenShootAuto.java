@@ -7,9 +7,36 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.interpolator.Interpolator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous (name= "Vision Up Shoot Garden Shoot", group= "Comp" )
+import org.firstinspires.ftc.teamcode.Alliance;
+
 public class VisionUpShootGardenShootAuto extends AutoBase {
     private final PoseFactory poseFactory = PoseFactory.degrees();
+
+    @Autonomous (
+            name= "[RED] Vision Up Shoot Garden Shoot",
+            group= "Comp",
+            preselectTeleOp = "[RED] BioBuzz Teleop"
+    )
+    public static class RedVisionUSGS extends VisionUpShootGardenShootAuto {
+        public RedVisionUSGS() {
+            super(Alliance.RED);
+        }
+    }
+
+    @Autonomous (
+            name= "[BLUE] Vision Up Shoot Garden Shoot",
+            group= "Comp",
+            preselectTeleOp = "[BLUE] BioBuzz Teleop"
+    )
+    public static class BlueVisionUSGS extends VisionUpShootGardenShootAuto {
+        public BlueVisionUSGS() {
+            super(Alliance.BLUE);
+        }
+    }
+
+    public VisionUpShootGardenShootAuto(Alliance alliance) {
+        super(alliance);
+    }
 
     private final Pose start = poseFactory.of(56.5367, 10.1466, -90);
     private final Pose point1 = poseFactory.of(9.0733, 8, 180);
@@ -27,8 +54,9 @@ public class VisionUpShootGardenShootAuto extends AutoBase {
     private final Pose point3Control1 = poseFactory.of(16.1287, 52.3292, 0);
     private final Pose driveFlower = poseFactory.of(22.5064, 47.4472, 180);
     private final Pose driveFlowerControl1 = poseFactory.of(58.7139, 33.827, 0);
-    private final Pose intakeflower = poseFactory.of(12.0962, 47.569, 180);
+    private final Pose intakeflower = poseFactory.of(12.0, 47.569, 180);
     private final Pose flowerToShootStart = poseFactory.of(12.0962, 47.569, 180);
+    private final Pose flowerShimmy = poseFactory.of(12.0962, 50.0, 180);
     private final Pose flowerToShoot = poseFactory.of(58.9282, 8.0445, -90);
 
     public Path driveFlower() {
@@ -41,6 +69,14 @@ public class VisionUpShootGardenShootAuto extends AutoBase {
 
     public Path flowerToShoot() {
         return Paths.line(flowerToShootStart, flowerToShoot).linear(flowerToShootStart, flowerToShoot);
+    }
+
+    public Path shimmyLeft() {
+        return Paths.line(intakeflower, flowerShimmy).constant(intakeflower);
+    }
+
+    public Path shimmyRight() {
+        return Paths.line(flowerShimmy, intakeflower).constant(flowerShimmy);
     }
 
 
@@ -73,19 +109,23 @@ public class VisionUpShootGardenShootAuto extends AutoBase {
                         stopCommand()),
                 visionStateChange("shoot", "go park")
         ));
+
         currentState = "State1";
         states.put("shoot", new AutoState(
                 shoot(),
                 ()-> "intake flower" ));
+
         states.put("shoot flower", new AutoState(
                 shoot(),
                 ()-> "go park" ));
+
         states.put("go park", new AutoState(
                 sequential(
                         follow(path3()),
                         stopCommand()
                 ), () -> END_STATE
         ));
+
         states.put("intake flower", new AutoState(
                 sequential(
                         parallel(
@@ -98,20 +138,23 @@ public class VisionUpShootGardenShootAuto extends AutoBase {
                         parallelRace(
                                 sequential(
                                         follow(intakeflower(), 0.5),
-                                        pause(2000)
+                                        follow(shimmyLeft(), 1.0),
+                                        follow(shimmyRight(), 1.0),
+                                        pause(1000)
                                 ),
                                 intake()
                         ),
                         parallel(
-                                follow(flowerToShoot()),
+                                follow(flowerToShoot(), 3.0),
                                 sequential(
                                         parallelRace(
-                                                pause(1000),
+                                                pause(500),
                                                 intake()
                                         ),
                                         flowerUp()
                                 )
-                        )
+                        ),
+                        stopCommand()
 
                 ),
                 visionStateChange("shoot flower", "go park")

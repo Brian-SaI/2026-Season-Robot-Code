@@ -38,7 +38,7 @@ public class ShooterTuning extends CommandOpMode {
 
         manipulatorController = new GamepadEx(gamepad2);
         manipulatorController.getGamepadButton(GamepadKeys.Button.CROSS).whileHeld(
-                        new ShootCommand(shooterSubsystem, indexerSubsystem)
+                        new ShootCommand(shooterSubsystem, indexerSubsystem, telemetry)
                 );
         telemetry.update();
     }

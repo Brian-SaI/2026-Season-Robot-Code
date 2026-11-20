@@ -29,7 +29,7 @@ public class TestAuto extends CommandOpMode {
     private final Pose path1Control2 = poseFactory.of(10, 64, 0);
 
     private Command follow(Path path) {
-        return new FollowPathCommand(drivetrain, path);
+        return new FollowPathCommand(drivetrain, path, telemetry);
     }
 
     private Path path1() {

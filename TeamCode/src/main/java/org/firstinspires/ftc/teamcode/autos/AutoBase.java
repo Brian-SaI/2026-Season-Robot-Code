@@ -61,6 +61,15 @@ public abstract class AutoBase extends CommandOpMode {
 
     Map<String, AutoState> states;
     String currentState;
+    final Alliance alliance;
+
+    protected AutoBase() {
+        this(Alliance.RED);
+    }
+
+    protected AutoBase(Alliance alliance) {
+        this.alliance = alliance;
+    }
 
     @Override
     public void initialize() {
@@ -69,7 +78,7 @@ public abstract class AutoBase extends CommandOpMode {
         drivetrain.calibratePinpoint();
         intake = new IntakeSubsystem(hardwareMap);
         indexer = new IndexerSubsystem(hardwareMap, telemetry);
-        vision = new VisionSubsystem(hardwareMap, telemetry, Alliance.RED, this);
+        vision = new VisionSubsystem(hardwareMap, telemetry, alliance, this);
         shooter = new ShooterSubsystem(hardwareMap,telemetry, vision);
         flower = new FlowerSubsystem(hardwareMap);
         states = new HashMap<>();
@@ -132,10 +141,10 @@ public abstract class AutoBase extends CommandOpMode {
     protected abstract void scheduleAuto();
 
     protected Command follow(Path path) {
-        return new FollowPathCommand(drivetrain, path);
+        return new FollowPathCommand(drivetrain, path, telemetry);
     }
     protected Command follow(Path path, double tolarance) {
-        return new FollowPathCommand(drivetrain, path, tolarance);
+        return new FollowPathCommand(drivetrain, path, tolarance, telemetry);
     }
 
     protected Command stopCommand() {
@@ -149,7 +158,7 @@ public abstract class AutoBase extends CommandOpMode {
 
     protected Command shoot(){
         return  parallelRace(
-                new ShootCommand(shooter, indexer),
+                new ShootCommand(shooter, indexer, telemetry),
                 new TimerCommand(3000));
     }
 

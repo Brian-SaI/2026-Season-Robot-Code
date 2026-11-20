@@ -5,11 +5,37 @@ import com.pedropathing.api.PoseFactory;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name = "Down Side Shoot Flower Shoot", group = "Comp")
+import org.firstinspires.ftc.teamcode.Alliance;
+
 //@Disabled
-public class DownSideShootFlowerShoot extends AutoBase {
+public class VisionDownSideShootFlowerShoot extends AutoBase {
+
+    @Autonomous(
+            name = "[BLUE] Vision Down Shoot Flower Shoot",
+            group = "Comp",
+            preselectTeleOp = "[BLUE] BioBuzz Teleop"
+    )
+    public static class BlueDSSFS extends VisionDownSideShootFlowerShoot {
+        public BlueDSSFS() {
+            super(Alliance.BLUE);
+        }
+    }
+
+    @Autonomous(
+            name = "[RED] Vision Down Shoot Flower Shoot",
+            group = "Comp",
+            preselectTeleOp = "[RED] BioBuzz Teleop"
+    )
+    public static class RedDSSFS extends VisionDownSideShootFlowerShoot {
+        public RedDSSFS() {
+            super(Alliance.RED);
+        }
+    }
+
+    public VisionDownSideShootFlowerShoot(Alliance alliance) {
+        super(alliance);
+    }
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
@@ -17,6 +43,7 @@ public class DownSideShootFlowerShoot extends AutoBase {
     private final Pose path1 = poseFactory.of(48, 120, 90);
     private final Pose path1Control1 = poseFactory.of(60.3006, 113.2799, 0);
     private final Pose point2 = poseFactory.of(48, 127.5, 90);
+    private final Pose point2Shimmy = poseFactory.of(45, 127.5, 90);
     private final Pose point3 = poseFactory.of(48, 120, 90);
     private final Pose path1_2 = poseFactory.of(60, 133, 90);
     private final Pose path1_2Control1 = poseFactory.of(60.3006, 113.2799, 0);
@@ -29,6 +56,14 @@ public class DownSideShootFlowerShoot extends AutoBase {
 
     public Path path2() {
         return Paths.line(path1, point2).constant(point2);
+    }
+
+    public Path shimmyOne() {
+        return Paths.line(point2, point2Shimmy).constant(point2Shimmy);
+    }
+
+    public Path shimmyTwo() {
+        return Paths.line(point2Shimmy, point2).constant(point2);
     }
 
     public Path path3() {
@@ -71,7 +106,9 @@ public class DownSideShootFlowerShoot extends AutoBase {
                         parallelRace(
                                 sequential(
                                         follow(path2(),1.0),
-                                        pause(2000),
+                                        follow(shimmyOne(),1.0),
+                                        follow(shimmyTwo(),1.0),
+                                        pause(1000),
                                         follow(path3())
                                 ),
                                 intake()),
