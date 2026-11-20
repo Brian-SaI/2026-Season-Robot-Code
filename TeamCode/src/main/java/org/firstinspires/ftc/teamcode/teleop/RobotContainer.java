@@ -137,14 +137,19 @@ public class RobotContainer extends CommandOpMode {
         startFlyWheelCommand = new StartFlyWheelCommand(shooterSubsystem);
         autoFlyWheelCommand = new AutoFlyWheelCommand(shooterSubsystem);
         idleFlyWheelCommand = new IdleFlyWheelCommand(shooterSubsystem);
+<<<<<<< Updated upstream
         shootCommand = new ShootCommand(shooterSubsystem, indexerSubsystem,telemetry);
         flowerCommand = new FlowerUpCommand(flowerSubsystem);
+=======
+        shootCommand = new ShootCommand(shooterSubsystem, indexerSubsystem);
+        // flowerCommand = new FlowerUpCommand(flowerSubsystem);
+>>>>>>> Stashed changes
 
         // Intake Commands
         manipulatorController.getGamepadButton(GamepadKeys.Button.SQUARE).whenHeld(intakeCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.TRIANGLE).whenHeld(shootCommand);
         manipulatorController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenHeld(outtakeCommand);
-        manipulatorController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenHeld(flowerCommand);
+        // manipulatorController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenHeld(flowerCommand);
         new Trigger(() -> manipulatorController.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
                 .whenActive(startFlyWheelCommand)
                 .whenInactive(idleFlyWheelCommand);
