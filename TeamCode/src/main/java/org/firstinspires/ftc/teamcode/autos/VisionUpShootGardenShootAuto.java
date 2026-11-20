@@ -25,6 +25,24 @@ public class VisionUpShootGardenShootAuto extends AutoBase {
     private final Pose point2Control3 = poseFactory.of(59.9273, 29.8742, 0);
     private final Pose point3 = poseFactory.of(13.7644, 94.3559, -90);
     private final Pose point3Control1 = poseFactory.of(16.1287, 52.3292, 0);
+    private final Pose driveFlower = poseFactory.of(22.5064, 47.4472, 180);
+    private final Pose driveFlowerControl1 = poseFactory.of(58.7139, 33.827, 0);
+    private final Pose intakeflower = poseFactory.of(12.0962, 47.569, 180);
+    private final Pose flowerToShootStart = poseFactory.of(12.0962, 47.569, 180);
+    private final Pose flowerToShoot = poseFactory.of(58.9282, 8.0445, -90);
+
+    public Path driveFlower() {
+        return Paths.curve(start, driveFlowerControl1, driveFlower).linear(start, driveFlower);
+    }
+
+    public Path intakeflower() {
+        return Paths.line(driveFlower, intakeflower).constant(intakeflower);
+    }
+
+    public Path flowerToShoot() {
+        return Paths.line(flowerToShootStart, flowerToShoot).linear(flowerToShootStart, flowerToShoot);
+    }
+
 
     public Path path1() {
         return Paths.curve(start, point1Control1, point1Control2, point1).heading(Interpolator.piecewise().until(0.5018, Interpolator.linear(point1Segment1Start, point1Segment1End)).until(1, Interpolator.constant(point1Segment2Heading)));
@@ -44,7 +62,7 @@ public class VisionUpShootGardenShootAuto extends AutoBase {
         states.put("State1", new AutoState(
                 sequential(
                         startFlywheel(),
-                        pause(2000),
+                        pause(1000),
                         shoot(),
                         parallelRace(
                                 intake(),
@@ -56,13 +74,48 @@ public class VisionUpShootGardenShootAuto extends AutoBase {
                 visionStateChange("shoot", "go park")
         ));
         currentState = "State1";
-        states.put("shoot", new AutoState(shoot(),
-                        ()-> "go park" ));
+        states.put("shoot", new AutoState(
+                shoot(),
+                ()-> "intake flower" ));
+        states.put("shoot flower", new AutoState(
+                shoot(),
+                ()-> "go park" ));
         states.put("go park", new AutoState(
                 sequential(
                         follow(path3()),
                         stopCommand()
                 ), () -> END_STATE
         ));
+        states.put("intake flower", new AutoState(
+                sequential(
+                        parallel(
+                                sequential(
+                                        pause(500),
+                                        flowerDown()
+                                ),
+                                follow(driveFlower())
+                        ),
+                        parallelRace(
+                                sequential(
+                                        follow(intakeflower(), 0.5),
+                                        pause(2000)
+                                ),
+                                intake()
+                        ),
+                        parallel(
+                                follow(flowerToShoot()),
+                                sequential(
+                                        parallelRace(
+                                                pause(1000),
+                                                intake()
+                                        ),
+                                        flowerUp()
+                                )
+                        )
+
+                ),
+                visionStateChange("shoot flower", "go park")
+        ));
     }
+
 }

@@ -47,11 +47,22 @@ public class DownSideShootFlowerShoot extends AutoBase {
     protected void scheduleAuto() {
         drivetrain.setPose(start);
         states.put("State1", new AutoState(
-                sequential(
                         parallelRace(
                                 pause(15_000),
                                 waitForTarget()
                         ),
+                visionStateChange("shoot", "park")
+        ));
+        currentState = "State1";
+        states.put("park", new AutoState(
+                sequential(
+                        follow(path5()),
+                        stopCommand()
+                ),
+                () -> END_STATE
+        ));
+        states.put("shoot",new AutoState(
+                sequential(
                         startFlywheel(),
                         pause(1000),
                         shoot(),
@@ -59,20 +70,14 @@ public class DownSideShootFlowerShoot extends AutoBase {
                         flowerDown(),
                         parallelRace(
                                 sequential(
-                                    follow(path2(),1.0),
-                                        pause(2000)
+                                        follow(path2(),1.0),
+                                        pause(2000),
+                                        follow(path3())
                                 ),
                                 intake()),
-                        follow(path3()),
                         flowerUp(),
                         follow(path1_2()),
-                        shoot(),
-                        follow(path5()),
-                        stopCommand()
-                ),
-                () -> END_STATE
-        ));
-        currentState = "State1";
-
+                        shoot()),
+                () ->"park" ));
     }
 }
