@@ -73,7 +73,7 @@ public class RobotContainer extends CommandOpMode {
     private AutoFlyWheelCommand autoFlyWheelCommand;
     private IdleFlyWheelCommand idleFlyWheelCommand;
     private PointToAprilTagCommand pointToAprilTagCommand;
-    private FlowerUpCommand flowerCommand;
+    //private FlowerUpCommand flowerCommand;
     private VisionSubsystem visionSubsystem;
     private GobildaIndicatorLight blinky;
     private GobildaIndicatorLight blinky2;
@@ -138,9 +138,8 @@ public class RobotContainer extends CommandOpMode {
         autoFlyWheelCommand = new AutoFlyWheelCommand(shooterSubsystem);
         idleFlyWheelCommand = new IdleFlyWheelCommand(shooterSubsystem);
         shootCommand = new ShootCommand(shooterSubsystem, indexerSubsystem,telemetry);
-        flowerCommand = new FlowerUpCommand(flowerSubsystem);
-        shootCommand = new ShootCommand(shooterSubsystem, indexerSubsystem);
-        // flowerCommand = new FlowerUpCommand(flowerSubsystem);
+        //flowerCommand = new FlowerUpCommand(flowerSubsystem);
+
 
 
         // Intake Commands

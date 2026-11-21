@@ -21,10 +21,6 @@ public class ShootCommand extends CommandBase {
 
     }
 
-    public ShootCommand(ShooterSubsystem shooterSubsystem, IndexerSubsystem indexerSubsystem) {
-
-    }
-
     @Override
     public void initialize() { // runs the command
 
